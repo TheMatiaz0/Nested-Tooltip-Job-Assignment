@@ -60,7 +60,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             public readonly ActionButtonType Type;
             public readonly UIHUDButton Button;
-            public readonly UITooltipDetector Tooltip;
+            public readonly TooltipTrigger Tooltip;
 
             /// <summary> T
             /// The current Action that is used when this button is pressed.
@@ -73,7 +73,7 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 Type = type;
                 Button = button;
-                Tooltip = button.GetComponent<UITooltipDetector>();
+                Tooltip = button.GetComponent<TooltipTrigger>();
                 m_Owner = owner;
             }
 

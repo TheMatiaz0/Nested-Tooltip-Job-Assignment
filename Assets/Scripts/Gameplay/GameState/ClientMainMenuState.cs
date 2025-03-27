@@ -37,7 +37,7 @@ namespace Unity.BossRoom.Gameplay.GameState
         [SerializeField]
         UIProfileSelector m_UIProfileSelector;
         [SerializeField]
-        UITooltipDetector m_UGSSetupTooltipDetector;
+        TooltipTrigger m_UGSSetupTooltipDetector;
 
         [Inject]
         AuthenticationServiceFacade m_AuthServiceFacade;

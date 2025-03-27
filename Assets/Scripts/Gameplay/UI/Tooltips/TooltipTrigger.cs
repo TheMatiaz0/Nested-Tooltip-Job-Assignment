@@ -12,11 +12,11 @@ namespace Unity.BossRoom.Gameplay.UI
     /// - the main camera in the scene has a PhysicsRaycaster component
     /// - if you're attaching this to a UI element such as an Image, make sure you check the "Raycast Target" checkbox
     /// </remarks>
-    public class UITooltipDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField]
         [Tooltip("The actual Tooltip that should be triggered")]
-        private UITooltipPopup m_TooltipPopup;
+        private TooltipView m_TooltipView;
 
         [SerializeField]
         [Multiline]
@@ -37,6 +37,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private float m_PointerEnterTime = 0;
         private bool m_IsShowingTooltip;
+        private bool m_IsLocked = false;
 
         public void SetText(string text)
         {
@@ -58,14 +59,12 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (m_PointerEnterTime != 0 && (Time.time - m_PointerEnterTime) > m_TooltipLockDelay)
+            if (m_IsLocked)
             {
-                Debug.Log("tooltip locked in!");
-
                 // TODO: find better way to handle tooltip ignore pointer
                 if (eventData != null
                     && eventData.pointerCurrentRaycast.gameObject != null
-                    && eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UITooltipPopup>() == m_TooltipPopup)
+                    && eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<TooltipView>() == m_TooltipView)
                 {
                     return;
                 }
@@ -89,6 +88,12 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 ShowTooltip();
             }
+
+            if (m_PointerEnterTime != 0 && (Time.time - m_PointerEnterTime) > m_TooltipLockDelay)
+            {
+                m_TooltipView.SetLockedTooltip(true);
+                m_IsLocked = true;
+            }
         }
 
         // TODO: refactor m_TooltipPopup to handle multiple popups than one
@@ -96,7 +101,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (!m_IsShowingTooltip)
             {
-                m_TooltipPopup.ShowTooltip(m_TooltipText, Input.mousePosition);
+                m_TooltipView.ShowTooltip(m_TooltipText, Input.mousePosition);
                 m_IsShowingTooltip = true;
             }
         }
@@ -105,8 +110,9 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (m_IsShowingTooltip)
             {
-                m_TooltipPopup.HideTooltip();
+                m_TooltipView.HideTooltip();
                 m_IsShowingTooltip = false;
+                m_IsLocked = false;
             }
         }
 
@@ -115,10 +121,10 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (gameObject.scene.rootCount > 1) // Hacky way for checking if this is a scene object or a prefab instance and not a prefab definition.
             {
-                if (!m_TooltipPopup)
+                if (!m_TooltipView)
                 {
                     // typically there's only one tooltip popup in the scene, so pick that
-                    m_TooltipPopup = FindObjectOfType<UITooltipPopup>();
+                    m_TooltipView = FindObjectOfType<TooltipView>();
                 }
             }
         }

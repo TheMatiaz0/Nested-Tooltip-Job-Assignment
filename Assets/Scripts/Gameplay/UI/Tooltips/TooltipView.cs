@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -7,7 +8,7 @@ namespace Unity.BossRoom.Gameplay.UI
     /// This controls the tooltip popup -- the little text blurb that appears when you hover your mouse
     /// over an ability icon.
     /// </summary>
-    public class UITooltipPopup : MonoBehaviour
+    public class TooltipView : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("This transform is shown/hidden to show/hide the popup box")]
@@ -16,6 +17,8 @@ namespace Unity.BossRoom.Gameplay.UI
         private TextMeshProUGUI m_TextField;
         [SerializeField]
         private Vector3 m_CursorOffset;
+        [SerializeField]
+        private Outline m_LockOutline;
 
         private Canvas m_Canvas;
 
@@ -31,11 +34,17 @@ namespace Unity.BossRoom.Gameplay.UI
             m_WindowRoot.SetActive(true);
         }
 
+        public void SetLockedTooltip(bool isLocked)
+        {
+            m_LockOutline.enabled = isLocked;
+        }
+
         /// <summary>
         /// Hides the current tooltip.
         /// </summary>
         public void HideTooltip()
         {
+            SetLockedTooltip(false);
             m_WindowRoot.SetActive(false);
         }
 

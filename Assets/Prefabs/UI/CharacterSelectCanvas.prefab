@@ -571,17 +571,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a385f19be6274674cad356b3cd023d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ActionTooltips:
-  - <Id>k__BackingField: 12
-    <Description>k__BackingField: Starts at {0}. Deals {1} damage at {2} m/s, can
-      pierce through {3} enemies.
-  - <Id>k__BackingField: 4
-    <Description>k__BackingField: Deals {0} damage at {1} m/s, can pierce through
-      {2} enemies.
-  - <Id>k__BackingField: 0
-    <Description>k__BackingField: Deals {0} damage over {1} seconds.
-  - <Id>k__BackingField: 14
-    <Description>k__BackingField: Deals {0} damage with {1}s cooldown between.
   m_WelcomeBanner: {fileID: 5940892341394635366}
   m_ClassLabel: {fileID: 5940892341477390618}
   m_HideWhenNoClassSelected: {fileID: 5940892341685850377}
@@ -1758,7 +1747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e7ca3e19eb99c4f97ff06a95ef7dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TooltipPopup: {fileID: 5940892342300009070}
+  m_TooltipView: {fileID: 5940892342300009070}
   m_TooltipText: Ability 3
   m_ActivateOnClick: 1
   m_TooltipDelay: 0.5
@@ -2366,7 +2355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e7ca3e19eb99c4f97ff06a95ef7dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TooltipPopup: {fileID: 5940892342300009070}
+  m_TooltipView: {fileID: 5940892342300009070}
   m_TooltipText: Ability 1
   m_ActivateOnClick: 1
   m_TooltipDelay: 0.5
@@ -2459,7 +2448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e7ca3e19eb99c4f97ff06a95ef7dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TooltipPopup: {fileID: 5940892342300009070}
+  m_TooltipView: {fileID: 5940892342300009070}
   m_TooltipText: Ability 2
   m_ActivateOnClick: 1
   m_TooltipDelay: 0.5
@@ -3044,6 +3033,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5940892341882885326}
     m_Modifications:
+    - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6713979121346225369, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -3070,11 +3079,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6713979121346225369, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 168
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6713979121346225369, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 73.63
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6713979121346225369, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_LocalPosition.x

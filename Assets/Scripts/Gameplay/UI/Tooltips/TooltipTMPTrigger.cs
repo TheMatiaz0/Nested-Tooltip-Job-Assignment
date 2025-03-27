@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
-    public class TooltipTMPHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class TooltipTMPTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private bool m_IsHovering;
         private TextMeshProUGUI m_Text;

@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Action = Unity.BossRoom.Gameplay.Actions.Action;
-using System.Collections.Generic;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -94,7 +93,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private void SetupPopup(Image iconSlot, Action action)
         {
-            if (iconSlot.TryGetComponent<UITooltipDetector>(out var tooltipDetector))
+            if (iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipDetector))
             {
                 tooltipDetector.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName,
                     string.Format(action.Config.Description, action.Config.Logic.ToString())));
