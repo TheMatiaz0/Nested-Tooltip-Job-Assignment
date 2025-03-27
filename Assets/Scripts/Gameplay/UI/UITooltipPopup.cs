@@ -50,12 +50,11 @@ namespace Unity.BossRoom.Gameplay.UI
         /// </summary>
         private Vector3 GetCanvasCoords(Vector3 screenCoords)
         {
-            Vector2 canvasCoords;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 m_Canvas.transform as RectTransform,
                 screenCoords,
-                m_Canvas.worldCamera,
-                out canvasCoords);
+                m_Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_Canvas.worldCamera,
+                out Vector2 canvasCoords);
             return m_Canvas.transform.TransformPoint(canvasCoords);
         }
 
