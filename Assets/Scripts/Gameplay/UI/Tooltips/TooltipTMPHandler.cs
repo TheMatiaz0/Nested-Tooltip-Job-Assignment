@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,8 +6,6 @@ namespace Unity.BossRoom.Gameplay.UI
 {
     public class TooltipTMPHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public Action<string> OnHoverOnLinkEvent;
-
         private bool m_IsHovering;
         private TextMeshProUGUI m_Text;
         private Canvas m_Canvas;
@@ -53,9 +50,8 @@ namespace Unity.BossRoom.Gameplay.UI
 
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
 
-            // TODO: send GetLinkID to some sort of Dictionary<string, TooltipData> where Link ID as string is stored
             Debug.Log($"{linkInfo.GetLinkText()}: {linkInfo.GetLinkID()}");
-            OnHoverOnLinkEvent?.Invoke(linkInfo.GetLinkID());
+            // System.Current.SetCurrentLinkHover();
         }
     }
 }
