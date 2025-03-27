@@ -1,7 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -12,8 +10,6 @@ namespace Unity.BossRoom.Gameplay.UI
     public class UITooltipPopup : MonoBehaviour
     {
         [SerializeField]
-        private Canvas m_Canvas;
-        [SerializeField]
         [Tooltip("This transform is shown/hidden to show/hide the popup box")]
         private GameObject m_WindowRoot;
         [SerializeField]
@@ -21,9 +17,11 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private Vector3 m_CursorOffset;
 
+        private Canvas m_Canvas;
+
         private void Awake()
         {
-            Assert.IsNotNull(m_Canvas);
+            m_Canvas = m_TextField.canvas;
         }
 
         /// <summary>
@@ -53,6 +51,7 @@ namespace Unity.BossRoom.Gameplay.UI
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 m_Canvas.transform as RectTransform,
                 screenCoords,
+
                 m_Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_Canvas.worldCamera,
                 out Vector2 canvasCoords);
             return m_Canvas.transform.TransformPoint(canvasCoords);

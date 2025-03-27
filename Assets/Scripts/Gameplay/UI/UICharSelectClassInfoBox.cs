@@ -88,11 +88,15 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 iconSlot.gameObject.SetActive(true);
                 iconSlot.sprite = action.Config.Icon;
-                UITooltipDetector tooltipDetector = iconSlot.GetComponent<UITooltipDetector>();
-                if (tooltipDetector)
-                {
-                    tooltipDetector.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName, action.Config.Description));
-                }
+                SetupPopup(iconSlot, action);
+            }
+        }
+
+        private void SetupPopup(Image iconSlot, Action action)
+        {
+            if (iconSlot.TryGetComponent<UITooltipDetector>(out var tooltipDetector))
+            {
+                tooltipDetector.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName, action.Config.Description));
             }
         }
     }

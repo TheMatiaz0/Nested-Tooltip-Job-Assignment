@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -32,6 +31,10 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("The length of time the mouse needs to hover over this element before the tooltip appears (in seconds)")]
         private float m_TooltipDelay = 0.5f;
 
+        [SerializeField]
+        [Tooltip("The length of time the mouse needs to hover over this element before the tooltip locks (in seconds)")]
+        private float m_TooltipLockDelay = 1f;
+
         private float m_PointerEnterTime = 0;
         private bool m_IsShowingTooltip;
 
@@ -39,6 +42,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             bool wasChanged = text != m_TooltipText;
             m_TooltipText = text;
+
             if (wasChanged && m_IsShowingTooltip)
             {
                 // we changed the text while of our tooltip was being shown! We need to re-show the tooltip!
@@ -54,6 +58,19 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            if (m_PointerEnterTime != 0 && (Time.time - m_PointerEnterTime) > m_TooltipLockDelay)
+            {
+                Debug.Log("tooltip locked in!");
+
+                // TODO: find better way to handle tooltip ignore pointer
+                if (eventData != null
+                    && eventData.pointerCurrentRaycast.gameObject != null
+                    && eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<UITooltipPopup>() == m_TooltipPopup)
+                {
+                    return;
+                }
+            }
+
             m_PointerEnterTime = 0;
             HideTooltip();
         }
@@ -74,6 +91,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
+        // TODO: refactor m_TooltipPopup to handle multiple popups than one
         private void ShowTooltip()
         {
             if (!m_IsShowingTooltip)
