@@ -56,20 +56,5 @@ namespace Unity.BossRoom.Gameplay.UI
                 out Vector2 canvasCoords);
             return m_Canvas.transform.TransformPoint(canvasCoords);
         }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (gameObject.scene.rootCount > 1) // Hacky way for checking if this is a scene object or a prefab instance and not a prefab definition.
-            {
-                if (!m_Canvas)
-                {
-                    // typically there's only one canvas in the scene, so pick that
-                    m_Canvas = FindObjectOfType<Canvas>();
-                }
-            }
-        }
-#endif
-
     }
 }
