@@ -19,16 +19,12 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private Canvas m_Canvas;
 
-        private void Awake()
-        {
-            m_Canvas = m_TextField.canvas;
-        }
-
         /// <summary>
         /// Shows a tooltip at the given mouse coordinates.
         /// </summary>
         public void ShowTooltip(string text, Vector3 screenXy)
         {
+            m_Canvas = m_TextField.canvas;
             screenXy += m_CursorOffset;
             m_WindowRoot.transform.position = GetCanvasCoords(screenXy);
             m_TextField.text = text;
@@ -51,7 +47,6 @@ namespace Unity.BossRoom.Gameplay.UI
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 m_Canvas.transform as RectTransform,
                 screenCoords,
-
                 m_Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_Canvas.worldCamera,
                 out Vector2 canvasCoords);
             return m_Canvas.transform.TransformPoint(canvasCoords);
