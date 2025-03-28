@@ -93,9 +93,9 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private void SetupPopup(Image iconSlot, Action action)
         {
-            if (iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipDetector))
+            if (iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipTrigger))
             {
-                tooltipDetector.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName,
+                tooltipTrigger.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName,
                     string.Format(action.Config.Description, action.Config.Logic.ToString())));
             }
         }

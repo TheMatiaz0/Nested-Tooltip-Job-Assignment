@@ -10,6 +10,8 @@ namespace Unity.BossRoom.Gameplay.UI
         private TextMeshProUGUI m_Text;
         private Canvas m_Canvas;
 
+        private TooltipPresenter m_TooltipPresenter;
+
         private void Awake()
         {
             m_Text = GetComponent<TextMeshProUGUI>();
@@ -21,9 +23,34 @@ namespace Unity.BossRoom.Gameplay.UI
             m_IsHovering = true;
         }
 
+        private bool IsPointerOverTooltip(PointerEventData eventData)
+        {
+            return eventData != null && eventData.pointerCurrentRaycast.gameObject != null &&
+                TooltipService.Instance.IsTooltipObject(eventData.pointerCurrentRaycast.gameObject);
+        }
+
         public void OnPointerExit(PointerEventData eventData)
         {
+            if (IsPointerOverTooltip(eventData))
+            {
+                return;
+            }
+
             m_IsHovering = false;
+            TryDestroyTooltip();
+        }
+
+        private void TrySpawnTooltip(TMP_LinkInfo linkInfo, Vector2 mousePosition)
+        {
+            m_TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(linkInfo.GetLinkText().ToUpper(), linkInfo.GetLinkID(), mousePosition);
+        }
+
+        private void TryDestroyTooltip()
+        {
+            if (m_TooltipPresenter != null)
+            {
+                TooltipFactory.Instance.DestroyTooltip(m_TooltipPresenter);
+            }
         }
 
         // we need Update here, because we need to check each word inside TMP text according to mousePosition
@@ -49,9 +76,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
-
-            Debug.Log($"{linkInfo.GetLinkText()}: {linkInfo.GetLinkID()}");
-            // System.Current.SetCurrentLinkHover();
+            TrySpawnTooltip(linkInfo, mousePosition);
         }
     }
 }

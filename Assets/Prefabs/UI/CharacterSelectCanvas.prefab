@@ -3035,23 +3035,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65.63
       objectReference: {fileID: 0}
     - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 84
       objectReference: {fileID: 0}
     - target: {fileID: 6713979120797423712, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -36.815
       objectReference: {fileID: 0}
     - target: {fileID: 6713979121346225369, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_Pivot.x
@@ -3135,7 +3135,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6713979121346225374, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
       propertyPath: m_Name
-      value: Tooltip
+      value: TooltipView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713979121346225374, guid: 48e55f5eeadc6a741a77b51167dfb21b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

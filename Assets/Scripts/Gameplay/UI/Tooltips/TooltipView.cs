@@ -44,7 +44,6 @@ namespace Unity.BossRoom.Gameplay.UI
         /// </summary>
         public void HideTooltip()
         {
-            SetLockedTooltip(false);
             m_WindowRoot.SetActive(false);
         }
 
