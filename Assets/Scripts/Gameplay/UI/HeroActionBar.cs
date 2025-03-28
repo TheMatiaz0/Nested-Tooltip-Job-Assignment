@@ -267,7 +267,7 @@ namespace Unity.BossRoom.Gameplay.UI
                 buttonInfo.Button.gameObject.SetActive(true);
                 buttonInfo.Button.interactable = isClickable;
                 buttonInfo.Button.image.sprite = sprite;
-                buttonInfo.Tooltip.SetText(description);
+                buttonInfo.Tooltip.UpdateText(description);
             }
 
             // store the action type so that we can retrieve it in click events

@@ -95,7 +95,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipTrigger))
             {
-                tooltipTrigger.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName,
+                tooltipTrigger.UpdateText(string.Format(m_TooltipFormat, action.Config.DisplayedName,
                     string.Format(action.Config.Description, action.Config.Logic.ToString())));
             }
         }

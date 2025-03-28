@@ -12,7 +12,7 @@ namespace Unity.BossRoom.Gameplay.UI
     /// - the main camera in the scene has a PhysicsRaycaster component
     /// - if you're attaching this to a UI element such as an Image, make sure you check the "Raycast Target" checkbox
     /// </remarks>
-    public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class TooltipTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField]
         private TooltipView m_TooltipPrefab;
@@ -26,60 +26,16 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("Should the tooltip appear instantly if the player clicks this UI element?")]
         private bool m_ActivateOnClick = true;
 
-        private TooltipPresenter m_TooltipPresenter;
-
-        public void SetText(string text)
+        protected override void OnHoverEnter()
         {
-            bool wasChanged = text != m_TooltipText;
-            m_TooltipText = text;
-
-            if (m_TooltipPresenter != null && wasChanged)
-            {
-                // we changed the text while of our tooltip was being shown! We need to re-show the tooltip!
-                TryDestroyTooltip();
-                TrySpawnTooltip();
-            }
-        }
-
-        private void TrySpawnTooltip()
-        {
-            m_TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(m_TooltipText, Input.mousePosition);
-        }
-
-        private void TryDestroyTooltip()
-        {
-            if (m_TooltipPresenter != null)
-            {
-                TooltipFactory.Instance.DestroyTooltip(m_TooltipPresenter);
-            }
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            TrySpawnTooltip();
-        }
-
-        private bool IsPointerOverTooltip(PointerEventData eventData)
-        {
-            return eventData != null && eventData.pointerCurrentRaycast.gameObject != null &&
-                TooltipService.Instance.IsTooltipObject(eventData.pointerCurrentRaycast.gameObject);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            if (IsPointerOverTooltip(eventData))
-            {
-                return;
-            }
-
-            TryDestroyTooltip();
+            TrySpawnTooltip(m_TooltipText, Input.mousePosition);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             if (m_ActivateOnClick)
             {
-                TrySpawnTooltip();
+                TrySpawnTooltip(m_TooltipText, Input.mousePosition);
             }
         }
     }

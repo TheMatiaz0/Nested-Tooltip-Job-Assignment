@@ -4,20 +4,37 @@ namespace Unity.BossRoom.Gameplay.UI
 {
     public class TooltipPresenter
     {
+        public TooltipData TooltipData { get; private set; }
         public GameObject TooltipObject => m_TooltipView.gameObject;
 
         private readonly TooltipView m_TooltipView;
-        private readonly TooltipData m_TooltipData;
+        private bool m_IsLocked;
+
+        public bool IsLocked
+        {
+            get
+            {
+                return m_IsLocked;
+            }
+            set
+            {
+                if (m_IsLocked != value)
+                {
+                    m_IsLocked = value;
+                    m_TooltipView.SetLockedTooltip(value);
+                }
+            }
+        }
 
         public TooltipPresenter(TooltipView view, TooltipData data)
         {
             m_TooltipView = view;
-            m_TooltipData = data;
+            TooltipData = data;
         }
 
         public void Show(Vector2 position)
         {
-            m_TooltipView.ShowTooltip(m_TooltipData.Text, position);
+            m_TooltipView.ShowTooltip(TooltipData.Text, position);
             TooltipService.Instance.RegisterTooltip(this);
         }
 
@@ -27,9 +44,10 @@ namespace Unity.BossRoom.Gameplay.UI
             TooltipService.Instance.UnregisterTooltip(this);
         }
 
-        public void SetLockState(bool isLocked)
+        public void UpdateData(TooltipData updatedData)
         {
-            m_TooltipView.SetLockedTooltip(isLocked);
+            TooltipData = updatedData;
+            m_TooltipView.UpdateText(updatedData.Text);
         }
     }
 }

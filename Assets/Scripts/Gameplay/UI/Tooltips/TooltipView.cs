@@ -34,6 +34,11 @@ namespace Unity.BossRoom.Gameplay.UI
             m_WindowRoot.SetActive(true);
         }
 
+        public void UpdateText(string updatedText)
+        {
+            m_TextField.text = updatedText;
+        }
+
         public void SetLockedTooltip(bool isLocked)
         {
             m_LockOutline.enabled = isLocked;

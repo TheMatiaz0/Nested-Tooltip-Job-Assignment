@@ -4,13 +4,10 @@ using UnityEngine.EventSystems;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
-    public class TooltipTMPTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class TooltipTMPTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler
     {
-        private bool m_IsHovering;
         private TextMeshProUGUI m_Text;
         private Canvas m_Canvas;
-
-        private TooltipPresenter m_TooltipPresenter;
 
         private void Awake()
         {
@@ -18,51 +15,15 @@ namespace Unity.BossRoom.Gameplay.UI
             m_Canvas = m_Text.canvas;
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            m_IsHovering = true;
-        }
-
-        private bool IsPointerOverTooltip(PointerEventData eventData)
-        {
-            return eventData != null && eventData.pointerCurrentRaycast.gameObject != null &&
-                TooltipService.Instance.IsTooltipObject(eventData.pointerCurrentRaycast.gameObject);
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            if (IsPointerOverTooltip(eventData))
-            {
-                return;
-            }
-
-            m_IsHovering = false;
-            TryDestroyTooltip();
-        }
-
-        private void TrySpawnTooltip(TMP_LinkInfo linkInfo, Vector2 mousePosition)
-        {
-            m_TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(linkInfo.GetLinkText().ToUpper(), linkInfo.GetLinkID(), mousePosition);
-        }
-
-        private void TryDestroyTooltip()
-        {
-            if (m_TooltipPresenter != null)
-            {
-                TooltipFactory.Instance.DestroyTooltip(m_TooltipPresenter);
-            }
-        }
-
         // we need Update here, because we need to check each word inside TMP text according to mousePosition
         private void Update()
         {
-            if (!m_IsHovering)
+            if (!IsHoveringOver)
             {
                 return;
             }
 
-            var mousePosition = Input.mousePosition;
-            CheckForLinkAtMousePosition(mousePosition);
+            CheckForLinkAtMousePosition(Input.mousePosition);
         }
 
         private void CheckForLinkAtMousePosition(Vector2 mousePosition)
@@ -76,7 +37,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
-            TrySpawnTooltip(linkInfo, mousePosition);
+            TrySpawnTooltip(linkInfo.GetLinkText().ToUpper(), linkInfo.GetLinkID(), mousePosition);
         }
     }
 }
