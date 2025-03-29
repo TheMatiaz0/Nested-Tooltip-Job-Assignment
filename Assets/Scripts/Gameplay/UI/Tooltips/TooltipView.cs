@@ -34,6 +34,14 @@ namespace Unity.BossRoom.Gameplay.UI
             m_WindowRoot.SetActive(true);
         }
 
+        /// <summary>
+        /// Hides the current tooltip.
+        /// </summary>
+        public void HideTooltip()
+        {
+            m_WindowRoot.SetActive(false);
+        }
+
         public void UpdateText(string updatedText)
         {
             m_TextField.text = updatedText;
@@ -42,14 +50,6 @@ namespace Unity.BossRoom.Gameplay.UI
         public void SetLockedTooltip(bool isLocked)
         {
             m_LockOutline.enabled = isLocked;
-        }
-
-        /// <summary>
-        /// Hides the current tooltip.
-        /// </summary>
-        public void HideTooltip()
-        {
-            m_WindowRoot.SetActive(false);
         }
 
         /// <summary>

@@ -37,7 +37,11 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
-            TrySpawnTooltip(linkInfo.GetLinkText().ToUpper(), linkInfo.GetLinkID(), mousePosition);
+
+            var linkId = linkInfo.GetLinkID();
+            var linkText = linkInfo.GetLinkText();
+
+            TooltipEvents.RequestTooltip(linkId, linkText, mousePosition);
         }
     }
 }

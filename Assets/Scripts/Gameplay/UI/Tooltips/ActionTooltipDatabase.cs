@@ -26,10 +26,15 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
-        public ActionTooltipData GetTooltipLinkData(string linkId)
+        public bool TryGetTooltipLinkData(string linkId, out ActionTooltipData data)
         {
-            m_TooltipDataDictionary.TryGetValue(linkId, out var data);
-            return data;
+            data = null;
+            if (m_TooltipDataDictionary.TryGetValue(linkId, out var value))
+            {
+                data = value;
+                return true;
+            }
+            return false;
         }
     }
 }

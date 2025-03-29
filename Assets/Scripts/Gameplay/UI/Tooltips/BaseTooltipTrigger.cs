@@ -3,11 +3,11 @@ using UnityEngine.EventSystems;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
-    public abstract class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         protected bool IsHoveringOver { get; private set; }
 
-        private TooltipPresenter m_TooltipPresenter;
+        protected TooltipPresenter m_TooltipPresenter;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -30,7 +30,11 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private bool IsPointerOverTooltip(PointerEventData eventData)
         {
-            return m_TooltipPresenter.IsLocked && eventData != null && eventData.pointerCurrentRaycast.gameObject != null &&
+            return m_TooltipPresenter != null
+                && m_TooltipPresenter.IsLocked
+                && eventData != null
+                && eventData.pointerCurrentRaycast.gameObject != null
+                &&
                 TooltipService.Instance.IsTooltipObject(eventData.pointerCurrentRaycast.gameObject);
         }
 
@@ -40,16 +44,6 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected virtual void OnHoverExit()
         {
-        }
-
-        public void UpdateText(string updatedText)
-        {
-            bool wasChanged = updatedText != m_TooltipPresenter.TooltipData.Text;
-
-            if (m_TooltipPresenter != null && wasChanged)
-            {
-                m_TooltipPresenter.UpdateData(new(updatedText));
-            }
         }
 
         protected void TrySpawnTooltip(string text, Vector2 mousePosition)

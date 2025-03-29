@@ -38,5 +38,17 @@ namespace Unity.BossRoom.Gameplay.UI
                 TrySpawnTooltip(m_TooltipText, Input.mousePosition);
             }
         }
+
+        public void UpdateText(string text)
+        {
+            bool wasChanged = text != m_TooltipText;
+            m_TooltipText = text;
+
+            if (m_TooltipPresenter != null && wasChanged)
+            {
+                TryDestroyTooltip();
+                TrySpawnTooltip(text, Input.mousePosition);
+            }
+        }
     }
 }
