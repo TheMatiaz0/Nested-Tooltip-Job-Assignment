@@ -23,15 +23,18 @@ namespace Unity.BossRoom.Gameplay.UI
         private static TooltipFactory s_Instance;
         public static TooltipFactory Instance => s_Instance ??= FindObjectOfType<TooltipFactory>();
 
-        public TooltipPresenter SpawnTooltip(string title, string description, Vector2 position)
+        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position)
         {
-            return SpawnTooltip(string.Format(m_TooltipFormat, title, description), position);
+            var formattedText = string.Format(m_TooltipFormat, title, data.Text);
+            var cachedChild = data.NextTooltip;
+            data = new(formattedText, cachedChild);
+
+            return SpawnTooltip(data, position);
         }
 
-        public TooltipPresenter SpawnTooltip(string text, Vector2 position)
+        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position)
         {
             var view = Instantiate(m_TooltipPrefab, transform.parent);
-            var data = new TooltipData(text);
             var tooltip = new TooltipPresenter(view, data);
 
             tooltip.Show(position);

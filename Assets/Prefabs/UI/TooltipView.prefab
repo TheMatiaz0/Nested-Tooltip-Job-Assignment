@@ -248,6 +248,7 @@ MonoBehaviour:
   m_TextField: {fileID: 6713979120797423715}
   m_CursorOffset: {x: 0, y: -5, z: 0}
   m_LockOutline: {fileID: 4389247697863391962}
+  m_NestedTrigger: {fileID: 3450602895690760975}
 --- !u!114 &6713979121346225188
 MonoBehaviour:
   m_ObjectHideFlags: 0

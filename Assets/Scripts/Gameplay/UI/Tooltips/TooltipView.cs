@@ -19,22 +19,18 @@ namespace Unity.BossRoom.Gameplay.UI
         private Vector3 m_CursorOffset;
         [SerializeField]
         private Outline m_LockOutline;
-        [SerializeField]
-        private TooltipTMPTrigger m_NestedTooltipTrigger;
-
-        public TooltipTMPTrigger NestedTooltipTrigger => m_NestedTooltipTrigger;
 
         private Canvas m_Canvas;
 
         /// <summary>
         /// Shows a tooltip at the given mouse coordinates.
         /// </summary>
-        public void ShowTooltip(string text, Vector3 screenXy)
+        public void ShowTooltip(TooltipData data, Vector3 screenXy)
         {
             m_Canvas = m_TextField.canvas;
             screenXy += m_CursorOffset;
             m_WindowRoot.transform.position = GetCanvasCoords(screenXy);
-            m_TextField.text = text;
+            m_TextField.text = data.Text;
             m_WindowRoot.SetActive(true);
         }
 

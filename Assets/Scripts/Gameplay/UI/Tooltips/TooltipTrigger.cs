@@ -20,14 +20,21 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected override void OnHoverEnter()
         {
-            TrySpawnTooltip(TooltipData.Text, Input.mousePosition);
+            if (TooltipPresenter != null)
+            {
+                TooltipPresenter.ShowNext(Input.mousePosition);
+            }
+            else
+            {
+                TrySpawnTooltip();
+            }
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             if (m_ActivateOnClick)
             {
-                TrySpawnTooltip(TooltipData.Text, Input.mousePosition);
+                TrySpawnTooltip();
             }
         }
     }

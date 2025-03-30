@@ -5,8 +5,9 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TooltipPresenter
     {
         public GameObject TooltipObject => TooltipView.gameObject;
-        public TooltipData TooltipData { get; }
+        private TooltipData TooltipData { get; set; }
         private TooltipView TooltipView { get; }
+        private TooltipData NextTooltipData { get; set; }
 
         private bool m_IsLocked;
 
@@ -30,12 +31,21 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             TooltipView = view;
             TooltipData = data;
+            NextTooltipData = data.NextTooltip;
         }
 
         public void Show(Vector2 position)
         {
-            TooltipView.ShowTooltip(TooltipData.Text, position);
+            TooltipView.ShowTooltip(TooltipData, position);
             TooltipService.Instance.RegisterTooltip(this);
+        }
+
+        public void ShowNext(Vector2 position)
+        {
+            if (NextTooltipData != null)
+            {
+                TooltipFactory.Instance.SpawnTooltip(NextTooltipData, position);
+            }
         }
 
         public void Hide()

@@ -10,10 +10,9 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("The text of the tooltip (this is the default text; it can also be changed in code)")]
         private TooltipData m_TooltipData;
 
-        protected bool IsHoveringOver { get; private set; }
-
-        protected TooltipPresenter m_TooltipPresenter;
         protected TooltipData TooltipData => m_TooltipData;
+        protected bool IsHoveringOver { get; private set; }
+        protected TooltipPresenter TooltipPresenter { get; private set; }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -39,17 +38,17 @@ namespace Unity.BossRoom.Gameplay.UI
             bool wasChanged = data != TooltipData;
             m_TooltipData = data;
 
-            if (m_TooltipPresenter != null && wasChanged)
+            if (TooltipPresenter != null && wasChanged)
             {
                 TryDestroyTooltip();
-                TrySpawnTooltip(data.Text, Input.mousePosition);
+                TrySpawnTooltip();
             }
         }
 
         private bool IsPointerOverTooltip(PointerEventData eventData)
         {
-            return m_TooltipPresenter != null
-                && m_TooltipPresenter.IsLocked
+            return TooltipPresenter != null
+                && TooltipPresenter.IsLocked
                 && eventData != null
                 && eventData.pointerCurrentRaycast.gameObject != null
                 &&
@@ -64,22 +63,22 @@ namespace Unity.BossRoom.Gameplay.UI
         {
         }
 
-        protected void TrySpawnTooltip(string text, Vector2 mousePosition)
+        protected void TrySpawnTooltip(Vector2? mousePosition = null)
         {
-            m_TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(text, mousePosition);
+            TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(TooltipData, mousePosition ?? Input.mousePosition);
         }
 
-        protected void TrySpawnTooltip(string title, string description, Vector2 mousePosition)
+        protected void TrySpawnTooltip(string title, Vector2 mousePosition)
         {
-            m_TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(title, description, mousePosition);
+            TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(title, TooltipData, mousePosition);
         }
 
         protected void TryDestroyTooltip()
         {
-            if (m_TooltipPresenter != null)
+            if (TooltipPresenter != null)
             {
-                TooltipFactory.Instance.DestroyTooltip(m_TooltipPresenter);
-                m_TooltipPresenter = null;
+                TooltipFactory.Instance.DestroyTooltip(TooltipPresenter);
+                TooltipPresenter = null;
             }
         }
     }

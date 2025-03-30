@@ -96,7 +96,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private void SetupTooltip(Image iconSlot, Action action)
         {
-            if (!iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipTrigger))
+            if (!iconSlot.TryGetComponent<BaseTooltipTrigger>(out var tooltipTrigger))
             {
                 return;
             }

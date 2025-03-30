@@ -31,20 +31,23 @@ namespace Unity.BossRoom.Gameplay.UI
             var intersectingLink = TMP_TextUtilities.FindIntersectingLink(m_Text, mousePosition,
                 m_Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_Canvas.worldCamera);
 
-            if (intersectingLink == -1 || m_TooltipPresenter != null)
+            if (intersectingLink == -1)
             {
                 return;
             }
 
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
-
-            var linkId = linkInfo.GetLinkID();
             var linkText = linkInfo.GetLinkText();
 
-            TrySpawnTooltip(TooltipData.Text, mousePosition);
-
-            // TODO: Handle case of two hyperlinks at the same time
-            // Solution: Remove from list and add back again?
+            // TODO: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
+            if (TooltipPresenter != null)
+            {
+                TooltipPresenter.ShowNext(Input.mousePosition);
+            }
+            else
+            {
+                TrySpawnTooltip(linkText, mousePosition);
+            }         
         }
     }
 }
