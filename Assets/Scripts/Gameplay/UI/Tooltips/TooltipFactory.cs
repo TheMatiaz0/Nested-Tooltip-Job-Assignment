@@ -35,7 +35,10 @@ namespace Unity.BossRoom.Gameplay.UI
         public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position)
         {
             var view = Instantiate(m_TooltipPrefab, transform.parent);
-            view.Trigger.UpdateData(data);
+            if (view.Trigger != null)
+            {
+                view.Trigger.UpdateData(data);
+            }
 
             var presenter = new TooltipPresenter(view, data);
             presenter.Show(position);

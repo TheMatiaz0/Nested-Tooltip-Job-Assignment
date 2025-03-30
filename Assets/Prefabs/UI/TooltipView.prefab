@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfe6655414c5de40be5ac9ca17f0e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TooltipData:
+    <Text>k__BackingField: 
 --- !u!1 &6713979121346225374
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +250,7 @@ MonoBehaviour:
   m_TextField: {fileID: 6713979120797423715}
   m_CursorOffset: {x: 0, y: -5, z: 0}
   m_LockOutline: {fileID: 4389247697863391962}
-  m_NestedTrigger: {fileID: 3450602895690760975}
+  m_Trigger: {fileID: 3450602895690760975}
 --- !u!114 &6713979121346225188
 MonoBehaviour:
   m_ObjectHideFlags: 0
