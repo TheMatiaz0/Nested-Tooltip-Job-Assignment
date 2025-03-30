@@ -27,7 +27,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void RegisterTooltip(TooltipPresenter tooltip)
         {
-            if (m_TooltipStack.Peek() == tooltip)
+            if (m_TooltipStack.Count == 0 || m_TooltipStack.Peek() == tooltip)
             {
                 return;
             }

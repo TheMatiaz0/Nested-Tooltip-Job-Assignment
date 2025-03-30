@@ -63,12 +63,19 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected void TrySpawnTooltip(Vector2? mousePosition = null)
         {
-            TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(TooltipData, mousePosition ?? Input.mousePosition);
+            TooltipPresenter ??=
+                TooltipFactory.Instance.SpawnTooltip(TooltipData,
+                mousePosition ?? Input.mousePosition,
+                this.transform);
         }
 
         protected void TrySpawnTooltip(string title, Vector2 mousePosition)
         {
-            TooltipPresenter ??= TooltipFactory.Instance.SpawnTooltip(title, TooltipData, mousePosition);
+            TooltipPresenter ??=
+                TooltipFactory.Instance.SpawnTooltip(title,
+                TooltipData,
+                mousePosition,
+                this.transform);
         }
 
         protected void TryDestroyTooltip()

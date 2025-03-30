@@ -44,7 +44,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (NextTooltipData != null)
             {
-                TooltipFactory.Instance.SpawnTooltip(NextTooltipData, position);
+                TooltipFactory.Instance.SpawnTooltip(NextTooltipData, position, TooltipObject.transform);
             }
         }
 

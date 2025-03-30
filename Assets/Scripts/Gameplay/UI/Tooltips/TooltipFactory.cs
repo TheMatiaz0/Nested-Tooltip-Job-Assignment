@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -20,21 +21,31 @@ namespace Unity.BossRoom.Gameplay.UI
         [Multiline]
         private string m_TooltipFormat = "<b>{0}</b>\n\n{1}";
 
-        private static TooltipFactory s_Instance;
-        public static TooltipFactory Instance => s_Instance ??= FindObjectOfType<TooltipFactory>();
+        public static TooltipFactory Instance { get; private set; }
 
-        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position)
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                throw new Exception("Multiple TooltipFactory defined!");
+            }
+
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+
+        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position, Transform parent)
         {
             var formattedText = string.Format(m_TooltipFormat, title, data.Text);
             var cachedChild = data.NextTooltip;
             data = new(formattedText, cachedChild);
 
-            return SpawnTooltip(data, position);
+            return SpawnTooltip(data, position, parent);
         }
 
-        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position)
+        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position, Transform parent)
         {
-            var view = Instantiate(m_TooltipPrefab, transform.parent);
+            var view = Instantiate(m_TooltipPrefab, parent);
             if (view.Trigger != null)
             {
                 view.Trigger.UpdateData(data);
