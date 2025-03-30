@@ -19,6 +19,10 @@ namespace Unity.BossRoom.Gameplay.UI
         private Vector3 m_CursorOffset;
         [SerializeField]
         private Outline m_LockOutline;
+        [SerializeField]
+        private TooltipTMPTrigger m_NestedTooltipTrigger;
+
+        public TooltipTMPTrigger NestedTooltipTrigger => m_NestedTooltipTrigger;
 
         private Canvas m_Canvas;
 
@@ -40,11 +44,6 @@ namespace Unity.BossRoom.Gameplay.UI
         public void HideTooltip()
         {
             m_WindowRoot.SetActive(false);
-        }
-
-        public void UpdateText(string updatedText)
-        {
-            m_TextField.text = updatedText;
         }
 
         public void SetLockedTooltip(bool isLocked)

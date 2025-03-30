@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Action = Unity.BossRoom.Gameplay.Actions.Action;
 using Unity.BossRoom.Gameplay.Actions;
-using System.Collections.Generic;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -106,15 +105,11 @@ namespace Unity.BossRoom.Gameplay.UI
             var rootText = string.Format(m_TooltipFormat, config.DisplayedName,
                         string.Format(config.Description, config.Logic.ToString()));
 
-            var currentTooltipSequence = new List<TooltipData>
-            {
-                new(rootText)
-            };
+            var rootTooltip = new TooltipData(rootText);
+            var tooltipChain = CreateTooltipChain(config);
 
-            CreateTooltipChain(config, ref currentTooltipSequence);
-
-            // TODO: push TooltipData sequence into the TooltipTrigger
-            tooltipTrigger.UpdateText(rootText);
+            rootTooltip.Attach(tooltipChain);
+            tooltipTrigger.UpdateData(rootTooltip);
         }
 
         private string FormatTooltip(ActionConfig config, int projectileIndex = 0)
@@ -129,19 +124,43 @@ namespace Unity.BossRoom.Gameplay.UI
                 .InjectIntoTemplate(template.Description, config, projectileIndex);
         }
 
-        private void CreateTooltipChain(ActionConfig config, ref List<TooltipData> tooltips)
+        private TooltipData CreateTooltipChain(ActionConfig config)
         {
             var configTooltipText = FormatTooltip(config);
-            tooltips.Add(new(configTooltipText));
+            var configTooltip = new TooltipData(configTooltipText);
 
             if (config.Projectiles.Length > 1)
             {
+                var root = configTooltip;
                 for (int i = 0; i < config.Projectiles.Length; i++)
                 {
-                    var projectileTooltipText = FormatTooltip(config, i);
-                    tooltips.Add(new(projectileTooltipText));
+                    root = RefreshProjectile(root, config, i);
                 }
             }
+
+            return configTooltip;
+        }
+
+        private TooltipData RefreshProjectile(TooltipData root, ActionConfig config, int i)
+        {
+            var projectileTooltipText = FormatTooltip(config, i);
+
+            if (i < config.Projectiles.Length - 1)
+            {
+                var nextProjectile = config.Projectiles[i + 1];
+                var linkText = GetNextProjectileLink(nextProjectile, config);
+                projectileTooltipText += " " + linkText;
+            }
+
+            var childTooltip = new TooltipData(projectileTooltipText);
+            root.Attach(childTooltip);
+
+            return root;
+        }
+
+        private string GetNextProjectileLink(ProjectileInfo nextProjectile, ActionConfig config)
+        {
+            return $"Turns into <link={config.Logic}><style=Clickable>{nextProjectile.ProjectilePrefab.name}</link></style> projectile upon {config.DurationSeconds / config.Projectiles.Length} seconds.";
         }
     }
 }

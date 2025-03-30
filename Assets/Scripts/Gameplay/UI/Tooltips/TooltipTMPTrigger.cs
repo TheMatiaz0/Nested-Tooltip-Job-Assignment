@@ -31,7 +31,7 @@ namespace Unity.BossRoom.Gameplay.UI
             var intersectingLink = TMP_TextUtilities.FindIntersectingLink(m_Text, mousePosition,
                 m_Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_Canvas.worldCamera);
 
-            if (intersectingLink == -1)
+            if (intersectingLink == -1 || m_TooltipPresenter != null)
             {
                 return;
             }
@@ -41,8 +41,10 @@ namespace Unity.BossRoom.Gameplay.UI
             var linkId = linkInfo.GetLinkID();
             var linkText = linkInfo.GetLinkText();
 
-            // TODO: get TooltipData here and TrySpawnTooltip
-            // TooltipEvents.RequestTooltip(linkId, linkText, mousePosition);
+            TrySpawnTooltip(TooltipData.Text, mousePosition);
+
+            // TODO: Handle case of two hyperlinks at the same time
+            // Solution: Remove from list and add back again?
         }
     }
 }

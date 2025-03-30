@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,15 +5,15 @@ namespace Unity.BossRoom.Gameplay.UI
 {
     public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField]
+        [Multiline]
+        [Tooltip("The text of the tooltip (this is the default text; it can also be changed in code)")]
+        private TooltipData m_TooltipData;
+
         protected bool IsHoveringOver { get; private set; }
 
         protected TooltipPresenter m_TooltipPresenter;
-        protected List<TooltipData> m_TooltipDatabase;
-
-        public void SetupDatabase(List<TooltipData> tooltips)
-        {
-            m_TooltipDatabase = new(tooltips);
-        }
+        protected TooltipData TooltipData => m_TooltipData;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -33,6 +32,18 @@ namespace Unity.BossRoom.Gameplay.UI
             TryDestroyTooltip();
 
             OnHoverExit();
+        }
+
+        public void UpdateData(TooltipData data)
+        {
+            bool wasChanged = data != TooltipData;
+            m_TooltipData = data;
+
+            if (m_TooltipPresenter != null && wasChanged)
+            {
+                TryDestroyTooltip();
+                TrySpawnTooltip(data.Text, Input.mousePosition);
+            }
         }
 
         private bool IsPointerOverTooltip(PointerEventData eventData)
@@ -68,6 +79,7 @@ namespace Unity.BossRoom.Gameplay.UI
             if (m_TooltipPresenter != null)
             {
                 TooltipFactory.Instance.DestroyTooltip(m_TooltipPresenter);
+                m_TooltipPresenter = null;
             }
         }
     }

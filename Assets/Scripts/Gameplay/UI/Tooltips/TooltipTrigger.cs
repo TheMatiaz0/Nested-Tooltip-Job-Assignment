@@ -15,36 +15,19 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TooltipTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField]
-        [Multiline]
-        [Tooltip("The text of the tooltip (this is the default text; it can also be changed in code)")]
-        private string m_TooltipText;
-
-        [SerializeField]
         [Tooltip("Should the tooltip appear instantly if the player clicks this UI element?")]
         private bool m_ActivateOnClick = true;
 
         protected override void OnHoverEnter()
         {
-            TrySpawnTooltip(m_TooltipText, Input.mousePosition);
+            TrySpawnTooltip(TooltipData.Text, Input.mousePosition);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             if (m_ActivateOnClick)
             {
-                TrySpawnTooltip(m_TooltipText, Input.mousePosition);
-            }
-        }
-
-        public void UpdateText(string text)
-        {
-            bool wasChanged = text != m_TooltipText;
-            m_TooltipText = text;
-
-            if (m_TooltipPresenter != null && wasChanged)
-            {
-                TryDestroyTooltip();
-                TrySpawnTooltip(text, Input.mousePosition);
+                TrySpawnTooltip(TooltipData.Text, Input.mousePosition);
             }
         }
     }
