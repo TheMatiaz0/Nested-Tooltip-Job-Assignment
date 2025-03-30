@@ -5,9 +5,9 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TooltipPresenter
     {
         public GameObject TooltipObject => TooltipView.gameObject;
-        private TooltipData TooltipData { get; set; }
+        private TooltipData TooltipData { get; }
         private TooltipView TooltipView { get; }
-        private TooltipData NextTooltipData { get; set; }
+        private TooltipData NextTooltipData { get; }
 
         private bool m_IsLocked;
 

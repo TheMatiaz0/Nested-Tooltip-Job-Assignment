@@ -39,15 +39,18 @@ namespace Unity.BossRoom.Gameplay.UI
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
             var linkText = linkInfo.GetLinkText();
 
-            // TODO: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
-            if (TooltipPresenter != null)
+            // TODO later: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
+            if (TooltipData.Text.Contains(linkText))
             {
-                TooltipPresenter.ShowNext(Input.mousePosition);
+                if (TooltipPresenter != null)
+                {
+                    TooltipPresenter.ShowNext(Input.mousePosition);
+                }
+                else
+                {
+                    TrySpawnTooltip(linkText, mousePosition);
+                }
             }
-            else
-            {
-                TrySpawnTooltip(linkText, mousePosition);
-            }         
         }
     }
 }

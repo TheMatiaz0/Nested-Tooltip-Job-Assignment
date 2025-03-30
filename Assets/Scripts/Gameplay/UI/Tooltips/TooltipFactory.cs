@@ -35,16 +35,18 @@ namespace Unity.BossRoom.Gameplay.UI
         public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position)
         {
             var view = Instantiate(m_TooltipPrefab, transform.parent);
-            var tooltip = new TooltipPresenter(view, data);
+            view.Trigger.UpdateData(data);
 
-            tooltip.Show(position);
-            return tooltip;
+            var presenter = new TooltipPresenter(view, data);
+            presenter.Show(position);
+
+            return presenter;
         }
 
-        public void DestroyTooltip(TooltipPresenter tooltip)
+        public void DestroyTooltip(TooltipPresenter presenter)
         {
-            tooltip?.Hide();
-            Destroy(tooltip.TooltipObject);
+            presenter?.Hide();
+            Destroy(presenter.TooltipObject);
         }
     }
 }

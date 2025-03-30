@@ -6,8 +6,6 @@ namespace Unity.BossRoom.Gameplay.UI
     public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField]
-        [Multiline]
-        [Tooltip("The text of the tooltip (this is the default text; it can also be changed in code)")]
         private TooltipData m_TooltipData;
 
         protected TooltipData TooltipData => m_TooltipData;

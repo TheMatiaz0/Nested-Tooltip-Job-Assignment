@@ -19,6 +19,10 @@ namespace Unity.BossRoom.Gameplay.UI
         private Vector3 m_CursorOffset;
         [SerializeField]
         private Outline m_LockOutline;
+        [SerializeField]
+        private BaseTooltipTrigger m_Trigger;
+
+        public BaseTooltipTrigger Trigger => m_Trigger;
 
         private Canvas m_Canvas;
 
