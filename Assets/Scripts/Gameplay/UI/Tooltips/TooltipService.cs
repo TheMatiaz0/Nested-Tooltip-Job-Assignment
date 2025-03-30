@@ -10,7 +10,8 @@ namespace Unity.BossRoom.Gameplay.UI
         private static TooltipService s_Instance;
         public static TooltipService Instance => s_Instance ??= new TooltipService();
 
-        public TooltipPresenter LastTooltip => m_TooltipStack.Count > 0 ? m_TooltipStack.Peek() : null;
+        public TooltipPresenter LastTooltip =>
+            m_TooltipStack.Count > 0 ? m_TooltipStack.Peek() : null;
 
         public bool IsTooltipObject(GameObject obj)
         {

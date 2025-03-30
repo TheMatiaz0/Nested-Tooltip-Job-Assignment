@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Action = Unity.BossRoom.Gameplay.Actions.Action;
+using Unity.BossRoom.Gameplay.Actions;
+using System.Collections.Generic;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -16,6 +18,8 @@ namespace Unity.BossRoom.Gameplay.UI
     /// </remarks>
     public class UICharSelectClassInfoBox : MonoBehaviour
     {
+        [SerializeField]
+        private ActionTooltipDatabase m_TooltipDatabase;
         [SerializeField]
         private TextMeshProUGUI m_WelcomeBanner;
         [SerializeField]
@@ -87,16 +91,56 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 iconSlot.gameObject.SetActive(true);
                 iconSlot.sprite = action.Config.Icon;
-                SetupPopup(iconSlot, action);
+                SetupTooltip(iconSlot, action);
             }
         }
 
-        private void SetupPopup(Image iconSlot, Action action)
+        private void SetupTooltip(Image iconSlot, Action action)
         {
-            if (iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipTrigger))
+            if (!iconSlot.TryGetComponent<TooltipTrigger>(out var tooltipTrigger))
             {
-                tooltipTrigger.UpdateText(string.Format(m_TooltipFormat, action.Config.DisplayedName,
-                    string.Format(action.Config.Description, action.Config.Logic.ToString())));
+                return;
+            }
+
+            var config = action.Config;
+            var rootText = string.Format(m_TooltipFormat, config.DisplayedName,
+                        string.Format(config.Description, config.Logic.ToString()));
+
+            var currentTooltipSequence = new List<TooltipData>
+            {
+                new(rootText)
+            };
+
+            CreateTooltipChain(config, ref currentTooltipSequence);
+
+            // TODO: push TooltipData sequence into the TooltipTrigger
+            tooltipTrigger.UpdateText(rootText);
+        }
+
+        private string FormatTooltip(ActionConfig config, int projectileIndex = 0)
+        {
+            if (!m_TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
+            {
+                Debug.Log($"Tooltip not found for action: {config.Logic}");
+                return config.DisplayedName;
+            }
+
+            return ActionTooltipInjector
+                .InjectIntoTemplate(template.Description, config, projectileIndex);
+        }
+
+        private void CreateTooltipChain(ActionConfig config, ref List<TooltipData> tooltips)
+        {
+            var configTooltipText = FormatTooltip(config);
+            tooltips.Add(new(configTooltipText));
+
+            if (config.Projectiles.Length > 1)
+            {
+                for (int i = 0; i < config.Projectiles.Length; i++)
+                {
+                    var projectileTooltipText = FormatTooltip(config, i);
+                    tooltips.Add(new(projectileTooltipText));
+                }
             }
         }
     }

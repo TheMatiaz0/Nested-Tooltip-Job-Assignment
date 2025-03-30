@@ -41,7 +41,8 @@ namespace Unity.BossRoom.Gameplay.UI
             var linkId = linkInfo.GetLinkID();
             var linkText = linkInfo.GetLinkText();
 
-            TooltipEvents.RequestTooltip(linkId, linkText, mousePosition);
+            // TODO: get TooltipData here and TrySpawnTooltip
+            // TooltipEvents.RequestTooltip(linkId, linkText, mousePosition);
         }
     }
 }

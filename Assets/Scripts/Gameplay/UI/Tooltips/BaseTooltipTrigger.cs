@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,6 +9,12 @@ namespace Unity.BossRoom.Gameplay.UI
         protected bool IsHoveringOver { get; private set; }
 
         protected TooltipPresenter m_TooltipPresenter;
+        protected List<TooltipData> m_TooltipDatabase;
+
+        public void SetupDatabase(List<TooltipData> tooltips)
+        {
+            m_TooltipDatabase = new(tooltips);
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
