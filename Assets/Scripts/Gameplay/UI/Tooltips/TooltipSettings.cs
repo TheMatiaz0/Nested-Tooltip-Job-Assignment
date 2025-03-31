@@ -1,0 +1,30 @@
+using UnityEngine;
+
+namespace Unity.BossRoom.Gameplay.UI
+{
+    [CreateAssetMenu(fileName = "TooltipSettings", menuName = "Tooltips/Tooltip Settings")]
+    public class TooltipSettings : ScriptableObject
+    {
+        private static TooltipSettings s_DefaultSettings;
+
+        public static TooltipSettings Default => s_DefaultSettings ??
+            (s_DefaultSettings = Resources.Load<TooltipSettings>("DefaultTooltipSettings"));
+
+        [SerializeField]
+        [Tooltip("The length of time the mouse needs to hover over this element before the tooltip appears (in seconds)")]
+        private float m_TooltipDelay = 0.5f;
+
+        [SerializeField]
+        [Tooltip("The length of time the mouse needs to hover over this element before the tooltip locks (in seconds)")]
+        private float m_TooltipLockDelay = 1.5f;
+
+        [SerializeField]
+        [Tooltip("Format of tooltips. {0} is skill name, {1} is skill description. Html-esque tags allowed!")]
+        [Multiline]
+        private string m_TooltipFormat = "<b>{0}</b>\n\n{1}";
+
+        public float TooltipDelay => m_TooltipDelay;
+        public float TooltipLockDelay => m_TooltipLockDelay;
+        public string TooltipFormat => m_TooltipFormat;
+    }
+}

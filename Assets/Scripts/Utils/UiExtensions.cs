@@ -4,9 +4,9 @@ namespace Unity.BossRoom.Utils
 {
     public static class UiExtensions
     {
-        public static Canvas GetRootCanvas(this Transform rect)
+        public static Canvas GetRootCanvas(this Transform t)
         {
-            Transform current = rect.transform;
+            Transform current = t;
 
             while (current != null)
             {

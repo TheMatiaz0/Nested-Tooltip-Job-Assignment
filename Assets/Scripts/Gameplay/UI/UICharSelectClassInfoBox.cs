@@ -41,10 +41,6 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("Message shown in the char-select screen. {0} will be replaced with the player's seat number")]
         [Multiline]
         private string m_WelcomeMsg = "Welcome, P{0}!";
-        [SerializeField]
-        [Tooltip("Format of tooltips. {0} is skill name, {1} is skill description. Html-esque tags allowed!")]
-        [Multiline]
-        private string m_TooltipFormat = "<b>{0}</b>\n\n{1}";
 
         private bool m_IsLockedIn = false;
 
@@ -102,7 +98,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             var config = action.Config;
-            var rootText = string.Format(m_TooltipFormat, config.DisplayedName,
+            var rootText = string.Format(TooltipSettings.Default.TooltipFormat, config.DisplayedName,
                         string.Format(config.Description, config.Logic.ToString()));
 
             var rootTooltip = new TooltipData(rootText);

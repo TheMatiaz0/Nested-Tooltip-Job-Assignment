@@ -8,19 +8,6 @@ namespace Unity.BossRoom.Gameplay.UI
     {
         [SerializeField] private TooltipView m_TooltipPrefab;
 
-        [SerializeField]
-        [Tooltip("The length of time the mouse needs to hover over this element before the tooltip appears (in seconds)")]
-        private float m_TooltipDelay = 0.5f;
-
-        [SerializeField]
-        [Tooltip("The length of time the mouse needs to hover over this element before the tooltip locks (in seconds)")]
-        private float m_TooltipLockDelay = 1f;
-
-        [SerializeField]
-        [Tooltip("Format of tooltips. {0} is skill name, {1} is skill description. Html-esque tags allowed!")]
-        [Multiline]
-        private string m_TooltipFormat = "<b>{0}</b>\n\n{1}";
-
         public static TooltipFactory Instance { get; private set; }
 
         private void Awake()
@@ -34,16 +21,16 @@ namespace Unity.BossRoom.Gameplay.UI
             Instance = this;
         }
 
-        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position, Canvas canvas)
+        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position, Canvas canvas, TooltipSettings settings)
         {
-            var formattedText = string.Format(m_TooltipFormat, title, data.Text);
+            var formattedText = string.Format(settings.TooltipFormat, title, data.Text);
             var cachedChild = data.NextTooltip;
             data = new(formattedText, cachedChild);
 
-            return SpawnTooltip(data, position, canvas);
+            return SpawnTooltip(data, position, canvas, settings);
         }
 
-        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position, Canvas canvas)
+        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position, Canvas canvas, TooltipSettings settings)
         {
             var view = Instantiate(m_TooltipPrefab, canvas.transform);
             if (view.Trigger != null)
@@ -51,7 +38,7 @@ namespace Unity.BossRoom.Gameplay.UI
                 view.Trigger.UpdateData(data);
             }
 
-            var presenter = new TooltipPresenter(view, data);
+            var presenter = new TooltipPresenter(view, data, settings);
             presenter.Show(position);
 
             return presenter;
