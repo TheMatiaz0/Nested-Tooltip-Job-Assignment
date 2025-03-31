@@ -34,18 +34,18 @@ namespace Unity.BossRoom.Gameplay.UI
             Instance = this;
         }
 
-        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position, Transform parent)
+        public TooltipPresenter SpawnTooltip(string title, TooltipData data, Vector2 position, Canvas canvas)
         {
             var formattedText = string.Format(m_TooltipFormat, title, data.Text);
             var cachedChild = data.NextTooltip;
             data = new(formattedText, cachedChild);
 
-            return SpawnTooltip(data, position, parent);
+            return SpawnTooltip(data, position, canvas);
         }
 
-        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position, Transform parent)
+        public TooltipPresenter SpawnTooltip(TooltipData data, Vector2 position, Canvas canvas)
         {
-            var view = Instantiate(m_TooltipPrefab, parent);
+            var view = Instantiate(m_TooltipPrefab, canvas.transform);
             if (view.Trigger != null)
             {
                 view.Trigger.UpdateData(data);

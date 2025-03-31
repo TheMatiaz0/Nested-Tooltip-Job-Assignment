@@ -23,6 +23,7 @@ namespace Unity.BossRoom.Gameplay.UI
         private BaseTooltipTrigger m_Trigger;
 
         public BaseTooltipTrigger Trigger => m_Trigger;
+        public Canvas Canvas => m_Canvas;
 
         private Canvas m_Canvas;
 

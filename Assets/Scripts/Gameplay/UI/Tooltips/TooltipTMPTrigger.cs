@@ -7,12 +7,10 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TooltipTMPTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler
     {
         private TextMeshProUGUI m_Text;
-        private Canvas m_Canvas;
 
         private void Awake()
         {
             m_Text = GetComponent<TextMeshProUGUI>();
-            m_Canvas = m_Text.canvas;
         }
 
         // we need Update here, because we need to check each word inside TMP text according to mousePosition
@@ -29,7 +27,7 @@ namespace Unity.BossRoom.Gameplay.UI
         private void CheckForLinkAtMousePosition(Vector2 mousePosition)
         {
             var intersectingLink = TMP_TextUtilities.FindIntersectingLink(m_Text, mousePosition,
-                m_Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_Canvas.worldCamera);
+                Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Canvas.worldCamera);
 
             if (intersectingLink == -1)
             {

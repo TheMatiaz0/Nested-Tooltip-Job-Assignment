@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if UNITY_EDITOR
+using Unity.BossRoom.Utils;
+#endif
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -8,9 +11,13 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private TooltipData m_TooltipData;
 
+        [SerializeField]
+        private Canvas m_Canvas;
+
         protected TooltipData TooltipData => m_TooltipData;
         protected bool IsHoveringOver { get; private set; }
         protected TooltipPresenter TooltipPresenter { get; private set; }
+        protected Canvas Canvas => m_Canvas;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -66,7 +73,7 @@ namespace Unity.BossRoom.Gameplay.UI
             TooltipPresenter ??=
                 TooltipFactory.Instance.SpawnTooltip(TooltipData,
                 mousePosition ?? Input.mousePosition,
-                this.transform);
+                m_Canvas);
         }
 
         protected void TrySpawnTooltip(string title, Vector2 mousePosition)
@@ -75,7 +82,7 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipFactory.Instance.SpawnTooltip(title,
                 TooltipData,
                 mousePosition,
-                this.transform);
+                m_Canvas);
         }
 
         protected void TryDestroyTooltip()
@@ -86,5 +93,18 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipPresenter = null;
             }
         }
+
+#if UNITY_EDITOR
+
+        private void OnValidate()
+        {
+            var canvas = this.transform.GetRootCanvas();
+            if (canvas != null)
+            {
+                m_Canvas = canvas;
+            }
+        }
+
+#endif
     }
 }
