@@ -12,12 +12,8 @@ namespace Unity.BossRoom.Gameplay.UI
     /// - the main camera in the scene has a PhysicsRaycaster component
     /// - if you're attaching this to a UI element such as an Image, make sure you check the "Raycast Target" checkbox
     /// </remarks>
-    public class TooltipTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class TooltipTrigger : BaseTooltipTrigger
     {
-        [SerializeField]
-        [Tooltip("Should the tooltip appear instantly if the player clicks this UI element?")]
-        private bool m_ActivateOnClick = true;
-
         protected override void OnHoverEnter()
         {
             if (TooltipPresenter != null)
@@ -25,14 +21,6 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipPresenter.ShowNext(Input.mousePosition);
             }
             else
-            {
-                TrySpawnTooltip();
-            }
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (m_ActivateOnClick)
             {
                 TrySpawnTooltip();
             }

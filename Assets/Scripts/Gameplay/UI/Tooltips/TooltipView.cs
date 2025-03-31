@@ -24,6 +24,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public BaseTooltipTrigger Trigger => m_Trigger;
         public Canvas Canvas => m_Canvas;
+        public bool IsLocked => m_LockOutline.enabled;
 
         private Canvas m_Canvas;
 

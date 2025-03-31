@@ -6,7 +6,7 @@ using Unity.BossRoom.Utils;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
-    public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField]
         private TooltipSettings m_CustomSettings;
@@ -27,6 +27,14 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             IsHoveringOver = true;
             OnHoverEnter();
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (TooltipSettings.ActivateOnClick)
+            {
+                TrySpawnTooltip();
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)

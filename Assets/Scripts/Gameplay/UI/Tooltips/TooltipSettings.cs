@@ -7,8 +7,23 @@ namespace Unity.BossRoom.Gameplay.UI
     {
         private static TooltipSettings s_DefaultSettings;
 
-        public static TooltipSettings Default => s_DefaultSettings ??
-            (s_DefaultSettings = Resources.Load<TooltipSettings>("DefaultTooltipSettings"));
+        public static TooltipSettings Default
+        {
+            get
+            {
+                if (s_DefaultSettings == null)
+                {
+                    s_DefaultSettings = Resources.Load<TooltipSettings>("DefaultTooltipSettings");
+
+                    if (s_DefaultSettings == null)
+                    {
+                        Debug.Log("DefaultTooltipSettings asset not found in Resources! Using default values.");
+                        s_DefaultSettings = CreateInstance<TooltipSettings>();
+                    }
+                }
+                return s_DefaultSettings;
+            }
+        }
 
         [SerializeField]
         [Tooltip("The length of time the mouse needs to hover over this element before the tooltip appears (in seconds)")]
@@ -23,8 +38,13 @@ namespace Unity.BossRoom.Gameplay.UI
         [Multiline]
         private string m_TooltipFormat = "<b>{0}</b>\n\n{1}";
 
-        public float TooltipDelay => m_TooltipDelay;
+        [SerializeField]
+        [Tooltip("Should the tooltip appear instantly if the player clicks this UI element?")]
+        private bool m_ActivateOnClick = true;
+
+        public float TooltipShowDelay => m_TooltipDelay;
         public float TooltipLockDelay => m_TooltipLockDelay;
         public string TooltipFormat => m_TooltipFormat;
+        public bool ActivateOnClick => m_ActivateOnClick;
     }
 }
