@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-#if UNITY_EDITOR
 using Unity.BossRoom.Utils;
-#endif
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -22,6 +20,14 @@ namespace Unity.BossRoom.Gameplay.UI
         protected TooltipPresenter TooltipPresenter { get; private set; }
         protected Canvas Canvas => m_Canvas;
         private TooltipSettings TooltipSettings => m_CustomSettings ?? TooltipSettings.Default;
+
+        private void OnEnable()
+        {
+            if (m_Canvas == null)
+            {
+                TryFindRootCanvas();
+            }
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -48,6 +54,8 @@ namespace Unity.BossRoom.Gameplay.UI
             TryDestroyTooltip();
 
             OnHoverExit();
+
+            TooltipService.Instance.ForceCloseAll();
         }
 
         public void UpdateData(TooltipData data)
@@ -108,15 +116,20 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
-#if UNITY_EDITOR
-
-        private void OnValidate()
+        private void TryFindRootCanvas()
         {
             var canvas = this.transform.GetRootCanvas();
             if (canvas != null)
             {
                 m_Canvas = canvas;
             }
+        }
+
+#if UNITY_EDITOR
+
+        private void OnValidate()
+        {
+            TryFindRootCanvas();
         }
 
 #endif

@@ -39,7 +39,7 @@ namespace Unity.BossRoom.Gameplay.UI
                 view.Trigger.UpdateData(data);
             }
 
-            var presenter = new TooltipPresenter(view, data, settings);
+            var presenter = new TooltipPresenter(view, data, canvas, settings);
             presenter.Show(position);
 
             return presenter;

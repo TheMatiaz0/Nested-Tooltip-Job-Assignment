@@ -23,17 +23,21 @@ namespace Unity.BossRoom.Gameplay.UI
         private BaseTooltipTrigger m_Trigger;
 
         public BaseTooltipTrigger Trigger => m_Trigger;
-        public Canvas Canvas => m_Canvas;
         public bool IsLocked => m_LockOutline.enabled;
 
         private Canvas m_Canvas;
 
+        private void Awake()
+        {
+            HideTooltip();
+        }
+
         /// <summary>
         /// Shows a tooltip at the given mouse coordinates.
         /// </summary>
-        public void ShowTooltip(TooltipData data, Vector3 screenXy)
+        public void ShowTooltip(TooltipData data, Vector3 screenXy, Canvas canvas)
         {
-            m_Canvas = m_TextField.canvas;
+            m_Canvas = canvas;
             screenXy += m_CursorOffset;
             m_WindowRoot.transform.position = GetCanvasCoords(screenXy);
             m_TextField.text = data.Text;
