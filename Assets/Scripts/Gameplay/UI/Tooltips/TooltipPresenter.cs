@@ -10,11 +10,10 @@ namespace Unity.BossRoom.Gameplay.UI
         public event Action<TooltipPresenter> onDestroyed;
 
         public bool IsLocked => TooltipView.IsLocked;
-        public GameObject TooltipObject => TooltipView.gameObject;
+        public GameObject TooltipObject => TooltipView?.gameObject;
         private CoroutineRunner Runner => CoroutineRunner.Instance;
         private TooltipData TooltipData { get; }
         private TooltipView TooltipView { get; }
-        private TooltipData NextTooltipData { get; set; }
         private TooltipSettings TooltipSettings { get; }
         private Canvas Canvas { get; }
 
@@ -27,7 +26,6 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             TooltipView = view;
             TooltipData = data;
-            NextTooltipData = data.NextTooltip;
             TooltipSettings = settings ?? TooltipSettings.Default;
 
             Canvas = canvas;
@@ -37,6 +35,8 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void Show(Vector2 position)
         {
+            TooltipService.Instance.RegisterTooltip(this);
+
             m_ShowCoroutine ??= Runner.RunCoroutine(ShowAfterDelay(position));
             m_LockCoroutine ??= Runner.RunCoroutine(LockAfterDelay());
         }
@@ -54,11 +54,13 @@ namespace Unity.BossRoom.Gameplay.UI
                 m_ShowCoroutine = null;
             }
 
-            TooltipView.HideTooltip();
-            TooltipView.SetLockedTooltip(false);
+            if (TooltipView != null && TooltipObject != null)
+            {
+                TooltipView.HideTooltip();
+                TooltipView.SetLockedTooltip(false);
+            }
 
             TooltipService.Instance.UnregisterTooltip(this);
-
             onDestroyed?.Invoke(this);
         }
 
@@ -66,8 +68,8 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             yield return m_WaitForShow;
 
-            TooltipView.ShowTooltip(TooltipData, position, Canvas);
-            TooltipService.Instance.RegisterTooltip(this);
+            TooltipView.ShowTooltip(TooltipData.Text, position + TooltipSettings.CursorOffset, Canvas);
+            TooltipView.SetupPadding(TooltipSettings.RaycastPadding);
         }
 
         private IEnumerator LockAfterDelay()

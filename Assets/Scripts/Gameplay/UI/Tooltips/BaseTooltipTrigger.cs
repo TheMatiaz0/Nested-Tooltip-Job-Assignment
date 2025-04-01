@@ -139,11 +139,8 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected void TryDestroyCascadeTooltips()
         {
-            if (TooltipPresenter != null)
-            {
-                TooltipService.Instance.DestroyCascadeTooltips();
-                TooltipPresenter = null;
-            }
+            TooltipService.Instance.DestroyCascadeTooltips();
+            TooltipPresenter = null;
         }
 
         private void TryFindRootCanvas()

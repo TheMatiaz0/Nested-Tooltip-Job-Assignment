@@ -16,11 +16,11 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private TextMeshProUGUI m_TextField;
         [SerializeField]
-        private Vector3 m_CursorOffset;
-        [SerializeField]
         private Outline m_LockOutline;
         [SerializeField]
         private BaseTooltipTrigger m_Trigger;
+        [SerializeField]
+        private RectTransform m_RaycastPadding;
 
         public BaseTooltipTrigger Trigger => m_Trigger;
         public bool IsLocked => m_LockOutline.enabled;
@@ -35,12 +35,11 @@ namespace Unity.BossRoom.Gameplay.UI
         /// <summary>
         /// Shows a tooltip at the given mouse coordinates.
         /// </summary>
-        public void ShowTooltip(TooltipData data, Vector3 screenXy, Canvas canvas)
+        public void ShowTooltip(string text, Vector3 screenXy, Canvas canvas)
         {
             m_Canvas = canvas;
-            screenXy += m_CursorOffset;
             m_WindowRoot.transform.position = GetCanvasCoords(screenXy);
-            m_TextField.text = data.Text;
+            m_TextField.text = text;
             m_WindowRoot.SetActive(true);
         }
 
@@ -50,6 +49,12 @@ namespace Unity.BossRoom.Gameplay.UI
         public void HideTooltip()
         {
             m_WindowRoot.SetActive(false);
+        }
+
+        public void SetupPadding(Vector2 padding)
+        {
+            m_RaycastPadding.offsetMin = new(-padding.x, -padding.y); // (left, bottom)
+            m_RaycastPadding.offsetMax = new(padding.x, padding.y); // (-right, -top)
         }
 
         public void SetLockedTooltip(bool isLocked)

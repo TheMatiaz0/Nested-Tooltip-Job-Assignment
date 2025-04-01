@@ -39,7 +39,7 @@ namespace Unity.BossRoom.Gameplay.UI
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
             var linkText = linkInfo.GetLinkText();
 
-            if (m_CurrentLink == linkText)
+            if (m_CurrentLink == linkText || !TooltipData.Text.Contains(linkText))
             {
                 return;
             }
@@ -47,10 +47,7 @@ namespace Unity.BossRoom.Gameplay.UI
             m_CurrentLink = linkText;
 
             // TODO later: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
-            if (TooltipData.Text.Contains(linkText))
-            {
-                TrySpawnNextTooltip(linkText, mousePosition);
-            }
+            TrySpawnNextTooltip(linkText, mousePosition);
         }
     }
 }

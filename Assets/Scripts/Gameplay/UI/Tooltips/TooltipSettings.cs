@@ -42,9 +42,17 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("Should the tooltip appear instantly if the player clicks this UI element?")]
         private bool m_ActivateOnClick = true;
 
+        [SerializeField]
+        private Vector2 m_CursorOffset = new(0, -5);
+
+        [SerializeField]
+        private Vector2 m_RaycastPadding = new(10, 10);
+
         public float TooltipShowDelay => m_TooltipDelay;
         public float TooltipLockDelay => m_TooltipLockDelay;
         public string TooltipFormat => m_TooltipFormat;
         public bool ActivateOnClick => m_ActivateOnClick;
+        public Vector2 CursorOffset => m_CursorOffset;
+        public Vector2 RaycastPadding => m_RaycastPadding;
     }
 }

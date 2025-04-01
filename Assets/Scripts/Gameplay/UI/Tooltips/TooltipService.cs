@@ -21,6 +21,7 @@ namespace Unity.BossRoom.Gameplay.UI
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -44,8 +45,10 @@ namespace Unity.BossRoom.Gameplay.UI
             if (m_TooltipStack.Peek() == tooltip)
             {
                 m_IsCascading = true;
+
                 m_TooltipStack.Pop();
                 TooltipFactory.Instance.DestroyTooltip(tooltip);
+
                 m_IsCascading = false;
             }
         }
