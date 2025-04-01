@@ -47,7 +47,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void DestroyTooltip(TooltipPresenter presenter)
         {
-            presenter?.Hide();
+            presenter.Hide();
             Destroy(presenter.TooltipObject);
         }
     }

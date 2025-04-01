@@ -51,11 +51,9 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             IsHoveringOver = false;
-            TryDestroyTooltip();
-
             OnHoverExit();
 
-            TooltipService.Instance.ForceCloseAll();
+            TryDestroyTooltip();
         }
 
         public void UpdateData(TooltipData data)
@@ -73,7 +71,6 @@ namespace Unity.BossRoom.Gameplay.UI
         private bool IsPointerOverTooltip(PointerEventData eventData)
         {
             return TooltipPresenter != null
-                && TooltipPresenter.IsLocked
                 && eventData != null
                 && eventData.pointerCurrentRaycast.gameObject != null
                 &&
@@ -97,11 +94,11 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipSettings);
         }
 
-        protected void TrySpawnTooltip(string title, Vector2 mousePosition)
+        protected void TrySpawnNextTooltip(string title, Vector2 mousePosition)
         {
             TooltipPresenter ??=
                 TooltipFactory.Instance.SpawnTooltip(title,
-                TooltipData,
+                TooltipData.NextTooltip,
                 mousePosition,
                 m_Canvas,
                 TooltipSettings);

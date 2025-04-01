@@ -7,6 +7,7 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TooltipTMPTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler
     {
         private TextMeshProUGUI m_Text;
+        private string m_CurrentLink;
 
         private void Awake()
         {
@@ -31,23 +32,24 @@ namespace Unity.BossRoom.Gameplay.UI
 
             if (intersectingLink == -1)
             {
+                m_CurrentLink = null;
                 return;
             }
 
             var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
             var linkText = linkInfo.GetLinkText();
 
+            if (m_CurrentLink == linkText)
+            {
+                return;
+            }
+
+            m_CurrentLink = linkText;
+
             // TODO later: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
             if (TooltipData.Text.Contains(linkText))
             {
-                if (TooltipPresenter != null)
-                {
-                    TooltipPresenter.ShowNext(Input.mousePosition);
-                }
-                else
-                {
-                    TrySpawnTooltip(linkText, mousePosition);
-                }
+                TrySpawnNextTooltip(linkText, mousePosition);
             }
         }
     }

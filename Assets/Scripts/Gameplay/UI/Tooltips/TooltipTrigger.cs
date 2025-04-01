@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.EventSystems;
-
 namespace Unity.BossRoom.Gameplay.UI
 {
     /// <summary>
@@ -16,14 +13,7 @@ namespace Unity.BossRoom.Gameplay.UI
     {
         protected override void OnHoverEnter()
         {
-            if (TooltipPresenter != null)
-            {
-                TooltipPresenter.ShowNext(Input.mousePosition);
-            }
-            else
-            {
-                TrySpawnTooltip();
-            }
+            TrySpawnTooltip();
         }
     }
 }

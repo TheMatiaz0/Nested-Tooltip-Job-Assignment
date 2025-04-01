@@ -32,19 +32,6 @@ namespace Unity.BossRoom.Gameplay.UI
             m_WaitForShow = new WaitForSeconds(TooltipSettings.TooltipShowDelay);
         }
 
-        /// <summary>
-        /// This method trickles down to <c>TooltipPresenter.Show(Vector2 position)</c>.
-        /// </summary>
-        /// <param name="position">Screen Space Position, ex. Input.mousePosition</param>
-        public void ShowNext(Vector2 position)
-        {
-            if (NextTooltipData != null)
-            {
-                TooltipFactory.Instance.SpawnTooltip(NextTooltipData, position, Canvas, TooltipSettings);
-                NextTooltipData = null;
-            }
-        }
-
         public void Show(Vector2 position)
         {
             m_ShowCoroutine ??= Runner.RunCoroutine(ShowAfterDelay(position));
@@ -65,9 +52,9 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             TooltipView.HideTooltip();
-            TooltipService.Instance.UnregisterTooltip(this);
-
             TooltipView.SetLockedTooltip(false);
+
+            TooltipService.Instance.UnregisterTooltip(this);
         }
 
         private IEnumerator ShowAfterDelay(Vector2 position)
