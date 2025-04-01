@@ -6,6 +6,8 @@ namespace Unity.BossRoom.Gameplay.UI
 {
     public class TooltipTMPTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler
     {
+        private const int k_NullLink = -1;
+
         private TextMeshProUGUI m_Text;
         private string m_CurrentLink;
 
@@ -30,7 +32,7 @@ namespace Unity.BossRoom.Gameplay.UI
             var intersectingLink = TMP_TextUtilities.FindIntersectingLink(m_Text, mousePosition,
                 Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Canvas.worldCamera);
 
-            if (intersectingLink == -1)
+            if (intersectingLink == k_NullLink)
             {
                 m_CurrentLink = null;
                 return;
@@ -47,7 +49,7 @@ namespace Unity.BossRoom.Gameplay.UI
             m_CurrentLink = linkText;
 
             // TODO later: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
-            TrySpawnNextTooltip(linkText, mousePosition);
+            TrySpawnNextTooltip(linkText.ToUpper(), mousePosition);
         }
     }
 }

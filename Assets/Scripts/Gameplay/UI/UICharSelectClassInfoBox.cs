@@ -112,7 +112,6 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (!m_TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
             {
-                Debug.Log($"Tooltip not found for action: {config.Logic}");
                 return config.DisplayedName;
             }
 

@@ -36,6 +36,7 @@ namespace Unity.BossRoom.Gameplay.UI
         private TooltipPresenter m_TooltipPresenter;
         protected Canvas Canvas => m_Canvas;
         private TooltipSettings TooltipSettings => m_CustomSettings ?? TooltipSettings.Default;
+        private bool HasTooltipSpawned => TooltipPresenter != null;
 
         private void OnDestroyedTooltip(TooltipPresenter presenter)
         {
@@ -53,6 +54,11 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (IsHoveringOver)
+            {
+                return;
+            }
+
             IsHoveringOver = true;
             OnHoverEnter();
         }
@@ -67,7 +73,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (IsPointerOverAnyTooltip(eventData))
+            if (!IsHoveringOver || IsPointerOverAnyTooltip(eventData))
             {
                 TryDestroyUnlockedTooltip();
                 return;
@@ -81,7 +87,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private bool IsPointerOverAnyTooltip(PointerEventData eventData)
         {
-            if (TooltipPresenter == null || eventData == null || eventData.pointerCurrentRaycast.gameObject == null)
+            if (eventData == null || eventData.pointerCurrentRaycast.gameObject == null)
             {
                 return false;
             }
@@ -94,7 +100,7 @@ namespace Unity.BossRoom.Gameplay.UI
             bool wasChanged = data != TooltipData;
             m_TooltipData = data;
 
-            if (TooltipPresenter != null && wasChanged)
+            if (HasTooltipSpawned && wasChanged)
             {
                 TryDestroyCascadeTooltips();
                 TrySpawnTooltip();
@@ -130,7 +136,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected void TryDestroyUnlockedTooltip()
         {
-            if (TooltipPresenter != null && !TooltipPresenter.IsLocked)
+            if (HasTooltipSpawned && !TooltipPresenter.IsLocked)
             {
                 TooltipFactory.Instance.DestroyTooltip(TooltipPresenter);
                 TooltipPresenter = null;
@@ -140,7 +146,6 @@ namespace Unity.BossRoom.Gameplay.UI
         protected void TryDestroyCascadeTooltips()
         {
             TooltipService.Instance.DestroyCascadeTooltips();
-            TooltipPresenter = null;
         }
 
         private void TryFindRootCanvas()
