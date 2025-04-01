@@ -12,15 +12,11 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private bool m_IsCascading = false;
 
-        public bool IsTooltipObject(GameObject obj)
+        public bool IsTooltipFromObject(GameObject obj)
         {
             foreach (var tooltip in m_TooltipStack)
             {
-                if (tooltip == null || tooltip.TooltipObject == null || obj == null)
-                {
-                    return false;
-                }
-                if (obj == tooltip.TooltipObject || obj.transform.IsChildOf(tooltip.TooltipObject.transform))
+                if (tooltip?.TooltipObject == obj || obj.transform.IsChildOf(tooltip.TooltipObject.transform))
                 {
                     return true;
                 }
@@ -45,11 +41,22 @@ namespace Unity.BossRoom.Gameplay.UI
                 return;
             }
 
-            CascadeHideTooltips();
+            if (m_TooltipStack.Peek() == tooltip)
+            {
+                m_IsCascading = true;
+                m_TooltipStack.Pop();
+                TooltipFactory.Instance.DestroyTooltip(tooltip);
+                m_IsCascading = false;
+            }
         }
 
-        private void CascadeHideTooltips()
+        public void DestroyCascadeTooltips()
         {
+            if (m_IsCascading)
+            {
+                return;
+            }
+
             m_IsCascading = true;
 
             while (m_TooltipStack.Count > 0)

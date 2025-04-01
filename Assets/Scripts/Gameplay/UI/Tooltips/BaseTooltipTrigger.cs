@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Unity.BossRoom.Utils;
-using System;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -68,15 +67,26 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (IsPointerOverTooltip(eventData))
+            if (IsPointerOverAnyTooltip(eventData))
             {
+                TryDestroyUnlockedTooltip();
                 return;
             }
 
             IsHoveringOver = false;
             OnHoverExit();
 
-            TryDestroyTooltip();
+            TryDestroyCascadeTooltips();
+        }
+
+        private bool IsPointerOverAnyTooltip(PointerEventData eventData)
+        {
+            if (TooltipPresenter == null || eventData == null || eventData.pointerCurrentRaycast.gameObject == null)
+            {
+                return false;
+            }
+
+            return TooltipService.Instance.IsTooltipFromObject(eventData.pointerCurrentRaycast.gameObject);
         }
 
         public void UpdateData(TooltipData data)
@@ -86,18 +96,9 @@ namespace Unity.BossRoom.Gameplay.UI
 
             if (TooltipPresenter != null && wasChanged)
             {
-                TryDestroyTooltip();
+                TryDestroyCascadeTooltips();
                 TrySpawnTooltip();
             }
-        }
-
-        private bool IsPointerOverTooltip(PointerEventData eventData)
-        {
-            return TooltipPresenter != null
-                && eventData != null
-                && eventData.pointerCurrentRaycast.gameObject != null
-                &&
-                TooltipService.Instance.IsTooltipObject(eventData.pointerCurrentRaycast.gameObject);
         }
 
         protected virtual void OnHoverEnter()
@@ -127,11 +128,20 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipSettings);
         }
 
-        protected void TryDestroyTooltip()
+        protected void TryDestroyUnlockedTooltip()
+        {
+            if (TooltipPresenter != null && !TooltipPresenter.IsLocked)
+            {
+                TooltipFactory.Instance.DestroyTooltip(TooltipPresenter);
+                TooltipPresenter = null;
+            }
+        }
+
+        protected void TryDestroyCascadeTooltips()
         {
             if (TooltipPresenter != null)
             {
-                TooltipFactory.Instance.DestroyTooltip(TooltipPresenter);
+                TooltipService.Instance.DestroyCascadeTooltips();
                 TooltipPresenter = null;
             }
         }
