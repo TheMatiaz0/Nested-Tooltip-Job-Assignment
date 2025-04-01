@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using Unity.BossRoom.Utils;
+using System;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
     public class TooltipPresenter
     {
+        public event Action<TooltipPresenter> onDestroyed;
+
         public bool IsLocked => TooltipView.IsLocked;
         public GameObject TooltipObject => TooltipView.gameObject;
         private CoroutineRunner Runner => CoroutineRunner.Instance;
@@ -15,10 +18,10 @@ namespace Unity.BossRoom.Gameplay.UI
         private TooltipSettings TooltipSettings { get; }
         private Canvas Canvas { get; }
 
-        private Coroutine m_LockCoroutine;
         private Coroutine m_ShowCoroutine;
-        private readonly YieldInstruction m_WaitForLock;
+        private Coroutine m_LockCoroutine;
         private readonly YieldInstruction m_WaitForShow;
+        private readonly YieldInstruction m_WaitForLock;
 
         public TooltipPresenter(TooltipView view, TooltipData data, Canvas canvas, TooltipSettings settings = null)
         {
@@ -55,6 +58,8 @@ namespace Unity.BossRoom.Gameplay.UI
             TooltipView.SetLockedTooltip(false);
 
             TooltipService.Instance.UnregisterTooltip(this);
+
+            onDestroyed?.Invoke(this);
         }
 
         private IEnumerator ShowAfterDelay(Vector2 position)
@@ -68,6 +73,7 @@ namespace Unity.BossRoom.Gameplay.UI
         private IEnumerator LockAfterDelay()
         {
             yield return m_WaitForLock;
+
             TooltipView.SetLockedTooltip(true);
         }
     }

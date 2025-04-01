@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Unity.BossRoom.Utils;
+using System;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
@@ -17,9 +18,31 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected TooltipData TooltipData => m_TooltipData;
         protected bool IsHoveringOver { get; private set; }
-        protected TooltipPresenter TooltipPresenter { get; private set; }
+        protected TooltipPresenter TooltipPresenter
+        {
+            get => m_TooltipPresenter;
+            private set
+            {
+                if (m_TooltipPresenter != value)
+                {
+                    m_TooltipPresenter = value;
+                    if (m_TooltipPresenter != null)
+                    {
+                        m_TooltipPresenter.onDestroyed += OnDestroyedTooltip;
+                    }
+                }
+            }
+        }
+
+        private TooltipPresenter m_TooltipPresenter;
         protected Canvas Canvas => m_Canvas;
         private TooltipSettings TooltipSettings => m_CustomSettings ?? TooltipSettings.Default;
+
+        private void OnDestroyedTooltip(TooltipPresenter presenter)
+        {
+            m_TooltipPresenter.onDestroyed -= OnDestroyedTooltip;
+            m_TooltipPresenter = null;
+        }
 
         private void OnEnable()
         {

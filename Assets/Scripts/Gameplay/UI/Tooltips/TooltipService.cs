@@ -10,13 +10,16 @@ namespace Unity.BossRoom.Gameplay.UI
         private static TooltipService s_Instance;
         public static TooltipService Instance => s_Instance ??= new TooltipService();
 
-        public TooltipPresenter LastTooltip =>
-            m_TooltipStack.Count > 0 ? m_TooltipStack.Peek() : null;
+        private bool m_IsCascading = false;
 
         public bool IsTooltipObject(GameObject obj)
         {
             foreach (var tooltip in m_TooltipStack)
             {
+                if (tooltip == null || tooltip.TooltipObject == null || obj == null)
+                {
+                    return false;
+                }
                 if (obj == tooltip.TooltipObject || obj.transform.IsChildOf(tooltip.TooltipObject.transform))
                 {
                     return true;
@@ -27,23 +30,35 @@ namespace Unity.BossRoom.Gameplay.UI
 
         public void RegisterTooltip(TooltipPresenter tooltip)
         {
+            if (m_TooltipStack.Contains(tooltip))
+            {
+                return;
+            }
+
             m_TooltipStack.Push(tooltip);
         }
 
         public void UnregisterTooltip(TooltipPresenter tooltip)
         {
-            if (m_TooltipStack.Count > 0 && m_TooltipStack.Peek() == tooltip)
+            if (!m_TooltipStack.Contains(tooltip) || m_IsCascading)
             {
-                m_TooltipStack.Pop().Hide();
+                return;
             }
+
+            CascadeHideTooltips();
         }
 
-        public void ForceCloseAll()
+        private void CascadeHideTooltips()
         {
+            m_IsCascading = true;
+
             while (m_TooltipStack.Count > 0)
             {
-                m_TooltipStack.Pop().Hide();
+                TooltipPresenter lastTooltip = m_TooltipStack.Pop();
+                TooltipFactory.Instance.DestroyTooltip(lastTooltip);
             }
+
+            m_IsCascading = false;
         }
     }
 }
