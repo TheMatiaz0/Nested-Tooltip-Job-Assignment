@@ -86,10 +86,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             var presenter = TooltipService.Instance.GetTooltipFromObject(eventData.pointerCurrentRaycast.gameObject);
-            if (presenter != null && !presenter.IsLocked)
-            {
-                TooltipFactory.Instance.DestroyTooltip(presenter);
-            }
+            TryDestroyUnlockedTooltip(presenter);
 
             return presenter != null;
         }
@@ -102,27 +99,35 @@ namespace Unity.BossRoom.Gameplay.UI
             if (HasTooltipSpawned && wasChanged)
             {
                 TooltipService.Instance.DestroyAllTooltips();
-                TrySpawnTooltip();
+                TrySpawnTooltip(data: data);
             }
         }
 
-        protected void TrySpawnTooltip(Vector2? mousePosition = null)
+        protected void TrySpawnTooltip(Vector2? mousePosition = null, TooltipData data = null)
         {
             TooltipPresenter ??=
-                TooltipFactory.Instance.SpawnTooltip(TooltipData,
+                TooltipFactory.Instance.SpawnTooltip(data ?? TooltipData,
                 mousePosition ?? Input.mousePosition,
                 m_Canvas,
                 TooltipSettings);
         }
 
-        protected void TrySpawnNextTooltip(string title, Vector2 mousePosition)
+        protected void TrySpawnTooltip(string title, Vector2 mousePosition, TooltipData data = null)
         {
             TooltipPresenter ??=
                 TooltipFactory.Instance.SpawnTooltip(title,
-                TooltipData.NextTooltip,
+                data ?? TooltipData,
                 mousePosition,
                 m_Canvas,
                 TooltipSettings);
+        }
+
+        private void TryDestroyUnlockedTooltip(TooltipPresenter presenter)
+        {
+            if (presenter != null && !presenter.IsLocked)
+            {
+                TooltipFactory.Instance.DestroyTooltip(presenter);
+            }
         }
 
         private void OnEnable()

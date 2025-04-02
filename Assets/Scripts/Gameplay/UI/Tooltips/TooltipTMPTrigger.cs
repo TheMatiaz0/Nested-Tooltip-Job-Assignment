@@ -15,7 +15,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private void OnLinkHovered(TMP_LinkInfo linkInfo, Vector2 mousePosition)
         {
-            TrySpawnNextTooltip(linkInfo.GetLinkText().ToUpper(), mousePosition);
+            TrySpawnTooltip(linkInfo.GetLinkText().ToUpper(), mousePosition);
         }
 
         protected override void OnHoverExit()

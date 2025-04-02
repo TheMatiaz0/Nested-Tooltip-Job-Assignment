@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Unity.BossRoom.Gameplay.UI
 {
     /// <summary>
