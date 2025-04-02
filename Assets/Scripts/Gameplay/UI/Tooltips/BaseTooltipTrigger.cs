@@ -69,7 +69,6 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (!IsHoveringOver || IsPointerOverAnyTooltip(eventData))
             {
-                TryDestroyUnlockedTooltip();
                 return;
             }
 
@@ -86,7 +85,13 @@ namespace Unity.BossRoom.Gameplay.UI
                 return false;
             }
 
-            return TooltipService.Instance.IsTooltipFromObject(eventData.pointerCurrentRaycast.gameObject);
+            var presenter = TooltipService.Instance.GetTooltipFromObject(eventData.pointerCurrentRaycast.gameObject);
+            if (presenter != null && !presenter.IsLocked)
+            {
+                TooltipFactory.Instance.DestroyTooltip(presenter);
+            }
+
+            return presenter != null;
         }
 
         public void UpdateData(TooltipData data)
@@ -118,15 +123,6 @@ namespace Unity.BossRoom.Gameplay.UI
                 mousePosition,
                 m_Canvas,
                 TooltipSettings);
-        }
-
-        protected void TryDestroyUnlockedTooltip()
-        {
-            if (HasTooltipSpawned && !TooltipPresenter.IsLocked)
-            {
-                TooltipFactory.Instance.DestroyTooltip(TooltipPresenter);
-                TooltipPresenter = null;
-            }
         }
 
         private void OnEnable()

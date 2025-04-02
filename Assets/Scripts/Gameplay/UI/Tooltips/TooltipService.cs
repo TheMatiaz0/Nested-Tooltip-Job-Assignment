@@ -12,17 +12,17 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private bool m_IsCascading = false;
 
-        public bool IsTooltipFromObject(GameObject obj)
+        public TooltipPresenter GetTooltipFromObject(GameObject obj)
         {
             foreach (var tooltip in m_TooltipStack)
             {
                 if (tooltip.TooltipObject != null && (tooltip.TooltipObject == obj || obj.transform.IsChildOf(tooltip.TooltipObject.transform)))
                 {
-                    return true;
+                    return tooltip;
                 }
             }
 
-            return false;
+            return null;
         }
 
         public void RegisterTooltip(TooltipPresenter tooltip)
