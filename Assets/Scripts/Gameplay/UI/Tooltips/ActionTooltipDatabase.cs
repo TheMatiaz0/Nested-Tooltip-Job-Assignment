@@ -7,9 +7,9 @@ namespace Unity.BossRoom.Gameplay.UI
     public class ActionTooltipDatabase : ScriptableObject
     {
         [SerializeField]
-        private List<ActionTooltipData> m_ActionTooltips;
+        private List<ActionTooltipDefinition> m_ActionTooltips;
 
-        private Dictionary<string, ActionTooltipData> m_TooltipDataDictionary;
+        private Dictionary<string, ActionTooltipDefinition> m_TooltipDataDictionary;
 
         private void OnEnable()
         {
@@ -26,7 +26,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
-        public bool TryGetTooltipLinkData(string linkId, out ActionTooltipData data)
+        public bool TryGetTooltipLinkData(string linkId, out ActionTooltipDefinition data)
         {
             data = null;
             if (m_TooltipDataDictionary.TryGetValue(linkId, out var value))

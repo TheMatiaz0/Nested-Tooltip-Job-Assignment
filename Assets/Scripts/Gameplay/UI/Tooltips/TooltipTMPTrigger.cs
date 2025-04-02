@@ -11,6 +11,11 @@ namespace Unity.BossRoom.Gameplay.UI
 
         protected override void OnHoverEnter()
         {
+            if (TooltipData == null)
+            {
+                return;
+            }
+
             m_LinkDetector.onLinkHovered += OnLinkHovered;
         }
 

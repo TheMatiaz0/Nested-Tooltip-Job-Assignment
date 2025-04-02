@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Unity.BossRoom.Gameplay.UI
 {
     [Serializable]
-    public class ActionTooltipData
+    public class ActionTooltipDefinition
     {
         [field: SerializeField]
         public ActionLogic Id { get; private set; }

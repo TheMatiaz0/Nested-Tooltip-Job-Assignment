@@ -43,7 +43,10 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             m_ShowCoroutine ??= Runner.RunCoroutine(ShowAfterDelay(position));
-            m_LockCoroutine ??= Runner.RunCoroutine(LockAfterDelay());
+            if (TooltipData.NextTooltip != null)
+            {
+                m_LockCoroutine ??= Runner.RunCoroutine(LockAfterDelay());
+            }
         }
 
         public void Hide()
