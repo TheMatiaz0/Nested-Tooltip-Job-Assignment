@@ -9,13 +9,13 @@ namespace Unity.BossRoom.Gameplay.UI
     {
         public event Action<TooltipPresenter> onDestroyed;
 
-        public bool IsLocked => TooltipView.IsLocked;
-        public GameObject TooltipObject => TooltipView?.gameObject;
-        private CoroutineRunner Runner => CoroutineRunner.Instance;
+        private TooltipView TooltipView { get; set; }
         private TooltipData TooltipData { get; }
-        private TooltipView TooltipView { get; }
         private TooltipSettings TooltipSettings { get; }
         private Canvas Canvas { get; }
+        private CoroutineRunner Runner => CoroutineRunner.Instance;
+        public bool IsLocked => TooltipView.IsLocked;
+        public GameObject TooltipObject => TooltipView != null && TooltipView.gameObject != null ? TooltipView.gameObject : null;
 
         private Coroutine m_ShowCoroutine;
         private Coroutine m_LockCoroutine;
@@ -58,6 +58,8 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 TooltipView.HideTooltip();
                 TooltipView.SetLockedTooltip(false);
+
+                TooltipView = null;
             }
 
             TooltipService.Instance.UnregisterTooltip(this);

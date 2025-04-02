@@ -6,12 +6,14 @@ namespace Unity.BossRoom.Gameplay.UI
 {
     public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
+        [Header("Optional")]
         [SerializeField]
         private TooltipSettings m_CustomSettings;
 
         [SerializeField]
         private TooltipData m_TooltipData;
 
+        [Header("References")]
         [SerializeField]
         private Canvas m_Canvas;
 
@@ -44,14 +46,6 @@ namespace Unity.BossRoom.Gameplay.UI
             m_TooltipPresenter = null;
         }
 
-        private void OnEnable()
-        {
-            if (m_Canvas == null)
-            {
-                TryFindRootCanvas();
-            }
-        }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (IsHoveringOver)
@@ -82,7 +76,7 @@ namespace Unity.BossRoom.Gameplay.UI
             IsHoveringOver = false;
             OnHoverExit();
 
-            TryDestroyCascadeTooltips();
+            TooltipService.Instance.DestroyAllTooltips();
         }
 
         private bool IsPointerOverAnyTooltip(PointerEventData eventData)
@@ -102,17 +96,9 @@ namespace Unity.BossRoom.Gameplay.UI
 
             if (HasTooltipSpawned && wasChanged)
             {
-                TryDestroyCascadeTooltips();
+                TooltipService.Instance.DestroyAllTooltips();
                 TrySpawnTooltip();
             }
-        }
-
-        protected virtual void OnHoverEnter()
-        {
-        }
-
-        protected virtual void OnHoverExit()
-        {
         }
 
         protected void TrySpawnTooltip(Vector2? mousePosition = null)
@@ -143,9 +129,12 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
-        protected void TryDestroyCascadeTooltips()
+        private void OnEnable()
         {
-            TooltipService.Instance.DestroyCascadeTooltips();
+            if (m_Canvas == null)
+            {
+                TryFindRootCanvas();
+            }
         }
 
         private void TryFindRootCanvas()
@@ -157,11 +146,22 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
+        protected virtual void OnHoverEnter()
+        {
+        }
+
+        protected virtual void OnHoverExit()
+        {
+        }
+
 #if UNITY_EDITOR
 
         private void OnValidate()
         {
-            TryFindRootCanvas();
+            if (m_Canvas == null)
+            {
+                TryFindRootCanvas();
+            }
         }
 
 #endif

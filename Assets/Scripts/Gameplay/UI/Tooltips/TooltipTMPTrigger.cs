@@ -1,55 +1,26 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
-    public class TooltipTMPTrigger : BaseTooltipTrigger, IPointerEnterHandler, IPointerExitHandler
+    public class TooltipTMPTrigger : BaseTooltipTrigger
     {
-        private const int k_NullLink = -1;
+        [SerializeField]
+        private TMPLinkDetector m_LinkDetector;
 
-        private TextMeshProUGUI m_Text;
-        private string m_CurrentLink;
-
-        private void Awake()
+        protected override void OnHoverEnter()
         {
-            m_Text = GetComponent<TextMeshProUGUI>();
+            m_LinkDetector.onLinkHovered += OnLinkHovered;
         }
 
-        // we need Update here, because we need to check each word inside TMP text according to mousePosition
-        private void Update()
+        private void OnLinkHovered(TMP_LinkInfo linkInfo, Vector2 mousePosition)
         {
-            if (!IsHoveringOver)
-            {
-                return;
-            }
-
-            CheckForLinkAtMousePosition(Input.mousePosition);
+            TrySpawnNextTooltip(linkInfo.GetLinkText().ToUpper(), mousePosition);
         }
 
-        private void CheckForLinkAtMousePosition(Vector2 mousePosition)
+        protected override void OnHoverExit()
         {
-            var intersectingLink = TMP_TextUtilities.FindIntersectingLink(m_Text, mousePosition,
-                Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Canvas.worldCamera);
-
-            if (intersectingLink == k_NullLink)
-            {
-                m_CurrentLink = null;
-                return;
-            }
-
-            var linkInfo = m_Text.textInfo.linkInfo[intersectingLink];
-            var linkText = linkInfo.GetLinkText();
-
-            if (m_CurrentLink == linkText || !TooltipData.Text.Contains(linkText))
-            {
-                return;
-            }
-
-            m_CurrentLink = linkText;
-
-            // TODO later: Handle case of two hyperlinks at the same time (NextTooltip could be List<TooltipData> maybe?)
-            TrySpawnNextTooltip(linkText.ToUpper(), mousePosition);
+            m_LinkDetector.onLinkHovered -= OnLinkHovered;
         }
     }
 }

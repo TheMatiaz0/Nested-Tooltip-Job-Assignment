@@ -53,7 +53,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
         }
 
-        public void DestroyCascadeTooltips()
+        public void DestroyAllTooltips()
         {
             if (m_IsCascading)
             {
