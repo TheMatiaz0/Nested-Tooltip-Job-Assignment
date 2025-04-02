@@ -46,6 +46,10 @@ namespace Unity.BossRoom.Gameplay.UI
             else
             {
                 string configTooltipText = InjectConfigIntoTemplate(config);
+                if (configTooltipText == null)
+                {
+                    return null;
+                }
                 rootTooltip = new TooltipData(configTooltipText);
             }
 
@@ -56,7 +60,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             if (!TooltipSettings.Default.TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
             {
-                return config.DisplayedName;
+                return null;
             }
 
             return ActionTooltipInjector
