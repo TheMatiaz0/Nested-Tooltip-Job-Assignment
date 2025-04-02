@@ -18,8 +18,6 @@ namespace Unity.BossRoom.Gameplay.UI
     public class UICharSelectClassInfoBox : MonoBehaviour
     {
         [SerializeField]
-        private ActionTooltipDatabase m_TooltipDatabase;
-        [SerializeField]
         private TextMeshProUGUI m_WelcomeBanner;
         [SerializeField]
         private TextMeshProUGUI m_ClassLabel;
@@ -98,76 +96,8 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             var config = action.Config;
-            var rootText = string.Format(TooltipSettings.Default.TooltipFormat, config.DisplayedName,
-                        string.Format(config.Description, config.Logic.ToString()));
-
-            var rootTooltip = new TooltipData(rootText);
-            var tooltipChain = CreateTooltipChain(config);
-
-            rootTooltip.Attach(tooltipChain);
+            var rootTooltip = ActionTooltipDataGenerator.Generate(config);
             tooltipTrigger.UpdateData(rootTooltip);
-        }
-
-        private string FormatTooltip(ActionConfig config, int projectileIndex = 0)
-        {
-            if (!m_TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
-            {
-                return config.DisplayedName;
-            }
-
-            return ActionTooltipInjector
-                .InjectIntoTemplate(template.Description, config, projectileIndex);
-        }
-
-        private TooltipData CreateTooltipChain(ActionConfig config)
-        {
-            TooltipData rootTooltip = null;
-
-            if (config.Projectiles.Length > 1)
-            {
-                var currentTooltip = rootTooltip;
-
-                for (int i = 0; i < config.Projectiles.Length; i++)
-                {
-                    var nextTooltip = RefreshProjectile(config, i);
-                    if (rootTooltip == null)
-                    {
-                        rootTooltip = nextTooltip;
-                        currentTooltip = nextTooltip;
-                    }
-                    else
-                    {
-                        currentTooltip.Attach(nextTooltip);
-                        currentTooltip = nextTooltip;
-                    }
-                }
-            }
-            else
-            {
-                string configTooltipText = FormatTooltip(config);
-                rootTooltip = new TooltipData(configTooltipText);
-            }
-
-            return rootTooltip;
-        }
-
-        private TooltipData RefreshProjectile(ActionConfig config, int i)
-        {
-            string projectileTooltipText = FormatTooltip(config, i);
-
-            if (i < config.Projectiles.Length - 1)
-            {
-                var nextProjectile = config.Projectiles[i + 1];
-                string linkText = GetNextProjectileLink(nextProjectile, config);
-                projectileTooltipText = $"{projectileTooltipText} {linkText}";
-            }
-
-            return new TooltipData(projectileTooltipText);
-        }
-
-        private string GetNextProjectileLink(ProjectileInfo nextProjectile, ActionConfig config)
-        {
-            return $"Turns into <link={config.Logic}><style=Clickable>{nextProjectile.ProjectilePrefab.name}</link></style> projectile upon {config.DurationSeconds / config.Projectiles.Length} seconds.";
         }
     }
 }

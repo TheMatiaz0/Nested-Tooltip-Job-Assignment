@@ -50,11 +50,15 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("Defines tooltip margin that allows cursor to move inside. Try increasing this if you have problem with entering locked tooltip.")]
         private Vector2 m_RaycastPadding = new(10, 10);
 
+        [SerializeField]
+        private ActionTooltipDatabase m_TooltipDatabase;
+
         public float TooltipShowDelay => m_TooltipDelay;
         public float TooltipLockDelay => m_TooltipLockDelay;
         public string TooltipFormat => m_TooltipFormat;
         public bool ActivateOnClick => m_ActivateOnClick;
         public Vector2 CursorOffset => m_CursorOffset;
         public Vector2 RaycastPadding => m_RaycastPadding;
+        public ActionTooltipDatabase TooltipDatabase => m_TooltipDatabase;
     }
 }
