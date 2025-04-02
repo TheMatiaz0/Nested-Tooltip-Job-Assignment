@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfe6655414c5de40be5ac9ca17f0e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CustomSettings: {fileID: 0}
+  m_CustomSettings: {fileID: 11400000, guid: 8f3d611ecfbaca144a138f7f109360dd, type: 2}
   m_TooltipData:
     <Text>k__BackingField: 
   m_Canvas: {fileID: 0}
