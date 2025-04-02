@@ -6,7 +6,7 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TooltipTMPTrigger : BaseTooltipTrigger
     {
         [SerializeField]
-        [Tooltip("TMPLinkDetector is required for detecting hyperlinks inside TextMeshPro text components. Add it to <b>Text (TMP)</b> and assign it manually.")]
+        [Tooltip("TMPLinkDetector is required for detecting hyperlinks inside TextMeshPro text components. Add it to Text (TMP) and assign it manually.")]
         private TMPLinkDetector m_LinkDetector;
 
         protected override void OnHoverEnter()

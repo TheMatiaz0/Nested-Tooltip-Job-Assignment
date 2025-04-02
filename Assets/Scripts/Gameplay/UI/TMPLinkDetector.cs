@@ -7,7 +7,9 @@ using UnityEngine.EventSystems;
 namespace Unity.BossRoom.Gameplay.UI
 {
     /// <summary>
-    /// Add this component next to TextMeshPro - Text (UI), as it requires Raycast Target from this component.
+    /// Checks for link tags inside TMP Text. To use it, define link tags inside your tooltip text.
+    /// <para>Check <see cref="TooltipTMPTrigger">TooltipTMPTrigger</see> for event implementation.</para>
+    /// <para>Add this component next to TextMeshPro - Text (UI), as it requires Raycast Target from this component.</para>
     /// </summary>
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class TMPLinkDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

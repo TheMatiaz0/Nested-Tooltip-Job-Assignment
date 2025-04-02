@@ -7,6 +7,7 @@ namespace Unity.BossRoom.Gameplay.UI
     /// <summary>
     /// Attach to any UI element that should have a tooltip popup. If the mouse hovers over this element
     /// long enough, the tooltip will appear and show the specified text.
+    /// If element contains trigger then holding longer will lock tooltip, allowing to enter it with pointer.
     /// </summary>
     /// <remarks>
     /// Having trouble getting the tooltips to show up? The event-handlers use physics raycasting, so make sure:
@@ -21,7 +22,7 @@ namespace Unity.BossRoom.Gameplay.UI
         private TooltipSettings m_CustomSettings;
 
         [SerializeField]
-        [Tooltip("Data to display upon triggering, can be also supplied through code. See <b>UpdateData()</b> method inside this script.")]
+        [Tooltip("Data to display upon triggering, can be also supplied through code.\nSee UpdateData() method inside this script.")]
         private TooltipData m_TooltipData;
 
         [Header("References")]
@@ -58,6 +59,9 @@ namespace Unity.BossRoom.Gameplay.UI
         private TooltipSettings TooltipSettings => m_CustomSettings ?? TooltipSettings.Default;
         private bool HasTooltipSpawned => TooltipPresenter != null;
 
+        /// <summary>
+        /// Manages proper GC deallocation by removing TooltipPresenter from being referenced.
+        /// </summary>
         private void OnDestroyedTooltip(TooltipPresenter presenter)
         {
             if (m_TooltipPresenter == presenter)
@@ -120,25 +124,25 @@ namespace Unity.BossRoom.Gameplay.UI
             if (HasTooltipSpawned && wasChanged)
             {
                 TooltipService.Instance.DestroyAllTooltips();
-                TrySpawnTooltip(data: data);
+                TrySpawnTooltip(customData: data);
             }
         }
 
-        protected void TrySpawnTooltip(Vector2? mousePosition = null, TooltipData data = null)
+        protected void TrySpawnTooltip(Vector2? mousePosition = null, TooltipData customData = null)
         {
             TooltipPresenter ??=
-                TooltipFactory.Instance.SpawnTooltip(data ?? TooltipData,
+                TooltipFactory.Instance.SpawnTooltip(customData ?? TooltipData,
                 mousePosition ?? Input.mousePosition,
                 m_Canvas,
                 TooltipSettings);
         }
 
-        protected void TrySpawnTooltip(string title, Vector2 mousePosition, TooltipData data = null)
+        protected void TrySpawnTooltip(string title, Vector2? mousePosition = null, TooltipData customData = null)
         {
             TooltipPresenter ??=
                 TooltipFactory.Instance.SpawnTooltip(title,
-                data ?? TooltipData,
-                mousePosition,
+                customData ?? TooltipData,
+                mousePosition ?? Input.mousePosition,
                 m_Canvas,
                 TooltipSettings);
         }

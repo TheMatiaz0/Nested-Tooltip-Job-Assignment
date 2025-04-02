@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
+    /// <summary>
+    /// Holds all tooltips in form of Stack of <see cref="TooltipPresenter">TooltipPresenters</see>.
+    /// </summary>
     public class TooltipService
     {
         private readonly Stack<TooltipPresenter> m_TooltipStack = new();
@@ -10,6 +13,9 @@ namespace Unity.BossRoom.Gameplay.UI
         private static TooltipService s_Instance;
         public static TooltipService Instance => s_Instance ??= new TooltipService();
 
+        /// <summary>
+        /// Checks if provided GameObject or its child is TooltipPresenter.TooltipObject (TooltipView's GameObject reference).
+        /// </summary>
         public TooltipPresenter GetTooltipFromObject(GameObject obj)
         {
             foreach (var tooltip in m_TooltipStack)

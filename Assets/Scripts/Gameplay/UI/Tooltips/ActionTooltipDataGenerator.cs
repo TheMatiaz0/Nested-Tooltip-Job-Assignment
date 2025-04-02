@@ -2,6 +2,9 @@ using Unity.BossRoom.Gameplay.Actions;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
+    /// <summary>
+    /// Injects data from <see cref="ActionConfig">ActionConfig</see> using <see cref="ActionTooltipInjector">ActionTooltipInjector</see> and generates formatted text that can be used for tooltips.
+    /// </summary>
     public static class ActionTooltipDataGenerator
     {
         public static TooltipData Generate(ActionConfig config)

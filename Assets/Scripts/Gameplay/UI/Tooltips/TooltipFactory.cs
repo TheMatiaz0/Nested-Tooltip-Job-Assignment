@@ -4,6 +4,11 @@ using System;
 namespace Unity.BossRoom.Gameplay.UI
 {
     // TODO: maybe implement Object Pooling in future
+
+    /// <summary>
+    /// Manages lifecycle of tooltips, instantiating and destroying Unity's GameObject.
+    /// <para>Produces <see cref="TooltipView">TooltipView</see> and <see cref="TooltipPresenter">TooltipPresenter</see> based on model <see cref="TooltipData">TooltipData</see>.</para>
+    /// </summary>
     public class TooltipFactory : MonoBehaviour
     {
         [SerializeField] private TooltipView m_TooltipPrefab;

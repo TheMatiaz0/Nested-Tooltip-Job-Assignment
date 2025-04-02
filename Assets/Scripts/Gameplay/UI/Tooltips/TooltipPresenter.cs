@@ -5,6 +5,12 @@ using System;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
+    /// <summary>
+    /// A controller of the tooltip popup
+    /// -- the little text blurb that appears when you hover your mouse
+    /// over an ability icon.
+    /// <para>See <see cref="TooltipView">TooltipView</see> for visual representation or <see cref="TooltipData">TooltipData</see> for model.</para>
+    /// </summary>
     public class TooltipPresenter
     {
         public event Action<TooltipPresenter> onDestroyed;

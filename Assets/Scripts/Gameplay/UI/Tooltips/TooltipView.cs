@@ -5,8 +5,10 @@ using UnityEngine.UI;
 namespace Unity.BossRoom.Gameplay.UI
 {
     /// <summary>
-    /// This controls the tooltip popup -- the little text blurb that appears when you hover your mouse
+    /// A visual representation of the tooltip popup
+    /// -- the little text blurb that appears when you hover your mouse
     /// over an ability icon.
+    /// <para>See <see cref="TooltipPresenter">TooltipPresenter</see> for controller or <see cref="TooltipData">TooltipData</see> for model.</para>
     /// </summary>
     public class TooltipView : MonoBehaviour
     {
@@ -16,10 +18,13 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private TextMeshProUGUI m_TextField;
         [SerializeField]
+        [Tooltip("This outline is used as visual representation of locking tooltip (allowing for pointer to enter).")]
         private Outline m_LockOutline;
         [SerializeField]
+        [Tooltip("This trigger is used as passage to next tooltip. Leave it empty if you don't want cascading tooltips.")]
         private BaseTooltipTrigger m_Trigger;
         [SerializeField]
+        [Tooltip("This padding is used as Raycast Target. Remember to add BaseTooltipTrigger to it.")]
         private RectTransform m_RaycastPadding;
 
         public BaseTooltipTrigger Trigger => m_Trigger;
@@ -51,12 +56,18 @@ namespace Unity.BossRoom.Gameplay.UI
             m_WindowRoot.SetActive(false);
         }
 
+        /// <summary>
+        /// Sets size of raycast padding around tooltip (makes easier to navigate inside).
+        /// </summary>
         public void SetupPadding(Vector2 padding)
         {
             m_RaycastPadding.offsetMin = new(-padding.x, -padding.y); // (left, bottom)
             m_RaycastPadding.offsetMax = new(padding.x, padding.y); // (-right, -top)
         }
 
+        /// <summary>
+        /// Sets visual of lock indication (when you can navigate inside tooltip).
+        /// </summary>
         public void SetLockedTooltip(bool isLocked)
         {
             m_LockOutline.enabled = isLocked;

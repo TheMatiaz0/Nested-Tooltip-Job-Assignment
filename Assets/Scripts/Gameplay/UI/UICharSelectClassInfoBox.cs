@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Action = Unity.BossRoom.Gameplay.Actions.Action;
-using Unity.BossRoom.Gameplay.Actions;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
