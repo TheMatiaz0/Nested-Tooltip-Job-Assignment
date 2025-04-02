@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 2787434284455179659}
   - component: {fileID: 4837691490676222705}
   m_Layer: 5
-  m_Name: TooltipTrigger
+  m_Name: TooltipTMPTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
