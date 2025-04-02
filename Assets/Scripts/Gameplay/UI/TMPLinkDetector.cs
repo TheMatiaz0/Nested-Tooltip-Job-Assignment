@@ -1,10 +1,15 @@
 using System;
 using TMPro;
+using Unity.BossRoom.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
+    /// <summary>
+    /// Add this component next to TextMeshPro - Text (UI), as it requires Raycast Target from this component.
+    /// </summary>
+    [RequireComponent(typeof(TextMeshProUGUI))]
     public class TMPLinkDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public event Action<TMP_LinkInfo, Vector2> onLinkHovered;
@@ -14,11 +19,14 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private Canvas m_Canvas;
 
-        [SerializeField]
         private TextMeshProUGUI m_Text;
-
         private string m_CurrentLink;
         private bool m_IsHovering;
+
+        private void Awake()
+        {
+            m_Text = GetComponent<TextMeshProUGUI>();
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -64,14 +72,30 @@ namespace Unity.BossRoom.Gameplay.UI
             onLinkHovered?.Invoke(linkInfo, mousePosition);
         }
 
+        private void OnEnable()
+        {
+            if (m_Canvas == null)
+            {
+                TryFindRootCanvas();
+            }
+        }
+
+        private void TryFindRootCanvas()
+        {
+            var canvas = this.transform.GetRootCanvas();
+            if (canvas != null)
+            {
+                m_Canvas = canvas;
+            }
+        }
 
 #if UNITY_EDITOR
 
         private void OnValidate()
         {
-            if (m_Text == null)
+            if (m_Canvas == null)
             {
-                m_Text = GetComponent<TextMeshProUGUI>();
+                TryFindRootCanvas();
             }
         }
 
