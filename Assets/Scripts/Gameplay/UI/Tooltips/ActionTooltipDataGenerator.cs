@@ -58,13 +58,24 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private static string InjectConfigIntoTemplate(ActionConfig config, int projectileIndex = 0)
         {
+            string description;
+
             if (!TooltipSettings.Default.TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
             {
                 return null;
             }
 
+            if (config.IsFriendly)
+            {
+                description = TooltipSettings.Default.TooltipDatabase.PositiveEffectDescription;
+            }
+            else
+            {
+                description = template.Description;
+            }
+
             return ActionTooltipInjector
-                .InjectIntoTemplate(template.Description, config, projectileIndex);
+                .InjectIntoTemplate(description, config, projectileIndex);
         }
 
         private static TooltipData GetDataFromProjectile(ActionConfig config, int projectileIndex)

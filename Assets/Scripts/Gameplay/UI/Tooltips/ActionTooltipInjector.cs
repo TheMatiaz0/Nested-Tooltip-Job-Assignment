@@ -8,7 +8,9 @@ namespace Unity.BossRoom.Gameplay.UI
     {
         private static readonly Dictionary<string, Func<ActionConfig, int, string>> k_TemplateMapping = new()
         {
-            { "{Damage}", (config, index) => index < config.Projectiles.Length ? config.Projectiles[index].Damage.ToString() : config.Amount.ToString() },
+            { "{Damage}", (config, index) => index < config.Projectiles.Length
+                ? FormatDamageToFriendly(config.Projectiles[index].Damage, config)
+                : FormatDamageToFriendly(config.Amount, config) },
             { "{Speed}", (config, index) => index < config.Projectiles.Length ? config.Projectiles[index].Speed_m_s.ToString() : "N/A" },
             { "{Pierce}", (config, index) => index < config.Projectiles.Length ? config.Projectiles[index].MaxVictims.ToString() : "N/A" },
             { "{StartTime}", (config, index) => config.ExecTimeSeconds.ToString() },
@@ -16,6 +18,11 @@ namespace Unity.BossRoom.Gameplay.UI
             { "{Duration}", (config, index) => config.DurationSeconds.ToString() },
             { "{Reuse}", (config, index) => config.ReuseTimeSeconds.ToString() }
         };
+
+        private static string FormatDamageToFriendly(int damage, ActionConfig config)
+        {
+            return config.IsFriendly ? (-damage).ToString() : damage.ToString();
+        }
 
         public static string InjectIntoTemplate(string template, ActionConfig config, int projectileIndex = 0)
         {

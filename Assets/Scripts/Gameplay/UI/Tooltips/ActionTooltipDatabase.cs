@@ -9,6 +9,12 @@ namespace Unity.BossRoom.Gameplay.UI
         [SerializeField]
         private List<ActionTooltipDefinition> m_ActionTooltips;
 
+        [SerializeField]
+        [TextArea]
+        private string m_PositiveEffectDescription;
+
+        public string PositiveEffectDescription => m_PositiveEffectDescription; 
+
         private Dictionary<string, ActionTooltipDefinition> m_TooltipDataDictionary;
 
         private void OnEnable()
