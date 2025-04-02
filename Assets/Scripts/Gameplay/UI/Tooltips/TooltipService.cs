@@ -16,7 +16,7 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             foreach (var tooltip in m_TooltipStack)
             {
-                if (tooltip?.TooltipObject == obj || obj.transform.IsChildOf(tooltip.TooltipObject.transform))
+                if (tooltip.TooltipObject != null && (tooltip.TooltipObject == obj || obj.transform.IsChildOf(tooltip.TooltipObject.transform)))
                 {
                     return true;
                 }

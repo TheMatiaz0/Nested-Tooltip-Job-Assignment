@@ -121,36 +121,48 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private TooltipData CreateTooltipChain(ActionConfig config)
         {
-            var configTooltipText = FormatTooltip(config);
-            var configTooltip = new TooltipData(configTooltipText);
+            TooltipData rootTooltip = null;
 
             if (config.Projectiles.Length > 1)
             {
-                var root = configTooltip;
+                var currentTooltip = rootTooltip;
+
                 for (int i = 0; i < config.Projectiles.Length; i++)
                 {
-                    root = RefreshProjectile(root, config, i);
+                    var nextTooltip = RefreshProjectile(config, i);
+                    if (rootTooltip == null)
+                    {
+                        rootTooltip = nextTooltip;
+                        currentTooltip = nextTooltip;
+                    }
+                    else
+                    {
+                        currentTooltip.Attach(nextTooltip);
+                        currentTooltip = nextTooltip;
+                    }
                 }
             }
+            else
+            {
+                string configTooltipText = FormatTooltip(config);
+                rootTooltip = new TooltipData(configTooltipText);
+            }
 
-            return configTooltip;
+            return rootTooltip;
         }
 
-        private TooltipData RefreshProjectile(TooltipData root, ActionConfig config, int i)
+        private TooltipData RefreshProjectile(ActionConfig config, int i)
         {
-            var projectileTooltipText = FormatTooltip(config, i);
+            string projectileTooltipText = FormatTooltip(config, i);
 
             if (i < config.Projectiles.Length - 1)
             {
                 var nextProjectile = config.Projectiles[i + 1];
-                var linkText = GetNextProjectileLink(nextProjectile, config);
-                projectileTooltipText += " " + linkText;
+                string linkText = GetNextProjectileLink(nextProjectile, config);
+                projectileTooltipText = $"{projectileTooltipText} {linkText}";
             }
 
-            var childTooltip = new TooltipData(projectileTooltipText);
-            root.Attach(childTooltip);
-
-            return root;
+            return new TooltipData(projectileTooltipText);
         }
 
         private string GetNextProjectileLink(ProjectileInfo nextProjectile, ActionConfig config)
