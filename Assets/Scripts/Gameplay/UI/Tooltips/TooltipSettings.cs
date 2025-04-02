@@ -43,9 +43,11 @@ namespace Unity.BossRoom.Gameplay.UI
         private bool m_ActivateOnClick = true;
 
         [SerializeField]
+        [Tooltip("Defines distance between cursor and tooltip. Try decreasing this if you have problem with entering locked tooltip.")]
         private Vector2 m_CursorOffset = new(0, -5);
 
         [SerializeField]
+        [Tooltip("Defines tooltip margin that allows cursor to move inside. Try increasing this if you have problem with entering locked tooltip.")]
         private Vector2 m_RaycastPadding = new(10, 10);
 
         public float TooltipShowDelay => m_TooltipDelay;

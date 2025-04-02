@@ -4,17 +4,29 @@ using Unity.BossRoom.Utils;
 
 namespace Unity.BossRoom.Gameplay.UI
 {
+    /// <summary>
+    /// Attach to any UI element that should have a tooltip popup. If the mouse hovers over this element
+    /// long enough, the tooltip will appear and show the specified text.
+    /// </summary>
+    /// <remarks>
+    /// Having trouble getting the tooltips to show up? The event-handlers use physics raycasting, so make sure:
+    /// - the main camera in the scene has a PhysicsRaycaster component
+    /// - if you're attaching this to a UI element such as an Image, make sure you check the "Raycast Target" checkbox
+    /// </remarks>
     public class BaseTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [Header("Optional")]
         [SerializeField]
+        [Tooltip("You can override settings if you want different settings locally for this tooltip than global default ones.\nFor default settings see:\nResources/DefaultTooltipSettings.asset")]
         private TooltipSettings m_CustomSettings;
 
         [SerializeField]
+        [Tooltip("Data to display upon triggering, can be also supplied through code. See <b>UpdateData()</b> method inside this script.")]
         private TooltipData m_TooltipData;
 
         [Header("References")]
         [SerializeField]
+        [Tooltip("Canvas is required for screen space calculations, no need for manual assignment.")]
         private Canvas m_Canvas;
 
         protected TooltipData TooltipData => m_TooltipData;

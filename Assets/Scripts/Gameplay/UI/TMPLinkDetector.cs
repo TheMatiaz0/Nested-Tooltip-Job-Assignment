@@ -17,6 +17,7 @@ namespace Unity.BossRoom.Gameplay.UI
         private const int k_NullLink = -1;
 
         [SerializeField]
+        [Tooltip("Canvas is required for screen space calculations, no need for manual assignment.")]
         private Canvas m_Canvas;
 
         private TextMeshProUGUI m_Text;
