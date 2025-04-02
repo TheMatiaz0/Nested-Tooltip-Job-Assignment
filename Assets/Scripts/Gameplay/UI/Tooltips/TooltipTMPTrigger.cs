@@ -17,6 +17,7 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             m_LinkDetector.onLinkHovered += OnLinkHovered;
+            m_LinkDetector.onLinkUnhovered += OnLinkUnhovered;
         }
 
         private void OnLinkHovered(TMP_LinkInfo linkInfo, Vector2 mousePosition)
@@ -24,9 +25,15 @@ namespace Unity.BossRoom.Gameplay.UI
             TrySpawnTooltip(linkInfo.GetLinkText().ToUpper(), mousePosition);
         }
 
+        private void OnLinkUnhovered()
+        {
+            TryDestroyUnlockedTooltip(TooltipPresenter);
+        }
+
         protected override void OnHoverExit()
         {
             m_LinkDetector.onLinkHovered -= OnLinkHovered;
+            m_LinkDetector.onLinkUnhovered -= OnLinkUnhovered;
         }
     }
 }

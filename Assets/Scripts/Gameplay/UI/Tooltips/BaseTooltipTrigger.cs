@@ -147,7 +147,7 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipSettings);
         }
 
-        private void TryDestroyUnlockedTooltip(TooltipPresenter presenter)
+        protected void TryDestroyUnlockedTooltip(TooltipPresenter presenter)
         {
             if (presenter != null && !presenter.IsLocked)
             {

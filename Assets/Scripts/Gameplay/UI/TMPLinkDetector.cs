@@ -15,6 +15,7 @@ namespace Unity.BossRoom.Gameplay.UI
     public class TMPLinkDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public event Action<TMP_LinkInfo, Vector2> onLinkHovered;
+        public event Action onLinkUnhovered;
 
         private const int k_NullLink = -1;
 
@@ -59,6 +60,7 @@ namespace Unity.BossRoom.Gameplay.UI
             if (intersectingLink == k_NullLink)
             {
                 m_CurrentLink = null;
+                onLinkUnhovered?.Invoke();
                 return;
             }
 
