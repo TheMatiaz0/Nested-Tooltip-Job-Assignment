@@ -72,8 +72,6 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 TooltipView.HideTooltip();
                 TooltipView.SetLockedTooltip(false);
-
-                TooltipView = null;
             }
 
             onDestroyed?.Invoke(this);
