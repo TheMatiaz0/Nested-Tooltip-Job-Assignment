@@ -17,17 +17,6 @@ namespace Unity.BossRoom.Gameplay.UI
             return rootTooltip;
         }
 
-        private static string InjectConfigIntoTemplate(ActionConfig config, int projectileIndex = 0)
-        {
-            if (!TooltipSettings.Default.TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
-            {
-                return config.DisplayedName;
-            }
-
-            return ActionTooltipInjector
-                .InjectIntoTemplate(template.Description, config, projectileIndex);
-        }
-
         private static TooltipData CreateTooltipChain(ActionConfig config)
         {
             TooltipData rootTooltip = null;
@@ -60,13 +49,24 @@ namespace Unity.BossRoom.Gameplay.UI
             return rootTooltip;
         }
 
-        private static TooltipData GetDataFromProjectile(ActionConfig config, int i)
+        private static string InjectConfigIntoTemplate(ActionConfig config, int projectileIndex = 0)
         {
-            string projectileTooltipText = InjectConfigIntoTemplate(config, i);
-
-            if (i < config.Projectiles.Length - 1)
+            if (!TooltipSettings.Default.TooltipDatabase.TryGetTooltipLinkData(config.Logic.ToString(), out var template))
             {
-                var nextProjectile = config.Projectiles[i + 1];
+                return config.DisplayedName;
+            }
+
+            return ActionTooltipInjector
+                .InjectIntoTemplate(template.Description, config, projectileIndex);
+        }
+
+        private static TooltipData GetDataFromProjectile(ActionConfig config, int projectileIndex)
+        {
+            string projectileTooltipText = InjectConfigIntoTemplate(config, projectileIndex);
+
+            if (projectileIndex < config.Projectiles.Length - 1)
+            {
+                var nextProjectile = config.Projectiles[projectileIndex + 1];
                 string linkText = GetNextProjectileLink(nextProjectile, config);
                 projectileTooltipText = $"{projectileTooltipText} {linkText}";
             }

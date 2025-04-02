@@ -37,6 +37,11 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             TooltipService.Instance.RegisterTooltip(this);
 
+            if (TooltipView.Trigger != null && TooltipData.NextTooltip != null)
+            {
+                TooltipView.Trigger.UpdateData(TooltipData.NextTooltip);
+            }
+
             m_ShowCoroutine ??= Runner.RunCoroutine(ShowAfterDelay(position));
             m_LockCoroutine ??= Runner.RunCoroutine(LockAfterDelay());
         }
@@ -62,7 +67,6 @@ namespace Unity.BossRoom.Gameplay.UI
                 TooltipView = null;
             }
 
-            TooltipService.Instance.UnregisterTooltip(this);
             onDestroyed?.Invoke(this);
         }
 

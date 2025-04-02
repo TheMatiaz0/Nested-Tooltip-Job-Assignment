@@ -34,11 +34,6 @@ namespace Unity.BossRoom.Gameplay.UI
         {
             var view = Instantiate(m_TooltipPrefab, canvas.transform);
 
-            if (view.Trigger != null && data.NextTooltip != null)
-            {
-                view.Trigger.UpdateData(data.NextTooltip);
-            }
-
             var presenter = new TooltipPresenter(view, data, canvas, settings);
             presenter.Show(position);
 

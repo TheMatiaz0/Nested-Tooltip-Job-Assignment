@@ -10,8 +10,6 @@ namespace Unity.BossRoom.Gameplay.UI
         private static TooltipService s_Instance;
         public static TooltipService Instance => s_Instance ??= new TooltipService();
 
-        private bool m_IsCascading = false;
-
         public TooltipPresenter GetTooltipFromObject(GameObject obj)
         {
             foreach (var tooltip in m_TooltipStack)
@@ -33,42 +31,32 @@ namespace Unity.BossRoom.Gameplay.UI
             }
 
             m_TooltipStack.Push(tooltip);
+            tooltip.onDestroyed += UnregisterTooltip;
         }
 
         public void UnregisterTooltip(TooltipPresenter tooltip)
         {
-            if (!m_TooltipStack.Contains(tooltip) || m_IsCascading)
+            if (!m_TooltipStack.Contains(tooltip))
             {
                 return;
             }
 
             if (m_TooltipStack.Peek() == tooltip)
             {
-                m_IsCascading = true;
-
+                tooltip.onDestroyed -= UnregisterTooltip;
                 m_TooltipStack.Pop();
                 TooltipFactory.Instance.DestroyTooltip(tooltip);
-
-                m_IsCascading = false;
             }
         }
 
         public void DestroyAllTooltips()
         {
-            if (m_IsCascading)
-            {
-                return;
-            }
-
-            m_IsCascading = true;
-
             while (m_TooltipStack.Count > 0)
             {
                 TooltipPresenter lastTooltip = m_TooltipStack.Pop();
+                lastTooltip.onDestroyed -= UnregisterTooltip;
                 TooltipFactory.Instance.DestroyTooltip(lastTooltip);
             }
-
-            m_IsCascading = false;
         }
     }
 }

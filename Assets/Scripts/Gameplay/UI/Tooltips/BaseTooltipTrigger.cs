@@ -26,7 +26,7 @@ namespace Unity.BossRoom.Gameplay.UI
 
         [Header("References")]
         [SerializeField]
-        [Tooltip("Canvas is required for screen space calculations, no need for manual assignment.")]
+        [Tooltip("Canvas is used for screen space calculations, no need for manual assignment.")]
         private Canvas m_Canvas;
 
         protected TooltipData TooltipData => m_TooltipData;
@@ -38,7 +38,13 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 if (m_TooltipPresenter != value)
                 {
+                    if (m_TooltipPresenter != null)
+                    {
+                        m_TooltipPresenter.onDestroyed -= OnDestroyedTooltip;
+                    }
+
                     m_TooltipPresenter = value;
+
                     if (m_TooltipPresenter != null)
                     {
                         m_TooltipPresenter.onDestroyed += OnDestroyedTooltip;
@@ -54,8 +60,11 @@ namespace Unity.BossRoom.Gameplay.UI
 
         private void OnDestroyedTooltip(TooltipPresenter presenter)
         {
-            m_TooltipPresenter.onDestroyed -= OnDestroyedTooltip;
-            m_TooltipPresenter = null;
+            if (m_TooltipPresenter == presenter)
+            {
+                m_TooltipPresenter.onDestroyed -= OnDestroyedTooltip;
+                m_TooltipPresenter = null;
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
