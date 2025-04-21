@@ -1,4 +1,3 @@
-using System;
 using Unity.BossRoom.Gameplay.Configuration;
 using TMPro;
 using UnityEngine;
@@ -39,10 +38,6 @@ namespace Unity.BossRoom.Gameplay.UI
         [Tooltip("Message shown in the char-select screen. {0} will be replaced with the player's seat number")]
         [Multiline]
         private string m_WelcomeMsg = "Welcome, P{0}!";
-        [SerializeField]
-        [Tooltip("Format of tooltips. {0} is skill name, {1} is skill description. Html-esque tags allowed!")]
-        [Multiline]
-        private string m_TooltipFormat = "<b>{0}</b>\n\n{1}";
 
         private bool m_IsLockedIn = false;
 
@@ -88,12 +83,20 @@ namespace Unity.BossRoom.Gameplay.UI
             {
                 iconSlot.gameObject.SetActive(true);
                 iconSlot.sprite = action.Config.Icon;
-                UITooltipDetector tooltipDetector = iconSlot.GetComponent<UITooltipDetector>();
-                if (tooltipDetector)
-                {
-                    tooltipDetector.SetText(string.Format(m_TooltipFormat, action.Config.DisplayedName, action.Config.Description));
-                }
+                SetupTooltip(iconSlot, action);
             }
+        }
+
+        private void SetupTooltip(Image iconSlot, Action action)
+        {
+            if (!iconSlot.TryGetComponent<BaseTooltipTrigger>(out var tooltipTrigger))
+            {
+                return;
+            }
+
+            var config = action.Config;
+            var rootTooltip = ActionTooltipDataGenerator.Generate(config);
+            tooltipTrigger.UpdateData(rootTooltip);
         }
     }
 }
